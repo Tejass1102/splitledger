@@ -22,6 +22,11 @@ public class GlobalExceptionHandler {
         return pd;
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ProblemDetail handleBadRequest(BadRequestException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ProblemDetail handleDuplicate(EmailAlreadyExistsException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
@@ -35,5 +40,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ProblemDetail handleConflict(ConflictException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
     }
 }

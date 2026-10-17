@@ -17,6 +17,9 @@ spring:
         format_sql: true
 
 app:
+  timezone: Asia/Kolkata            # the timezone your users live in
+  salary-reminder:
+    cron: "0 0 9 * * *"
   jwt:
     secret: ${JWT_SECRET}
     expiration-ms: 86400000   # 24 hours
