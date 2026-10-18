@@ -1,0 +1,20 @@
+package com.splitledger.backend.repository;
+
+import com.splitledger.backend.entity.ExpenseSplit;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.Collection;
+import java.util.List;
+
+public interface ExpenseSplitRepository extends JpaRepository<ExpenseSplit, Long> {
+
+    // One query for the shares of many expenses, with the member loaded
+    @Query("select s from ExpenseSplit s join fetch s.member "
+            + "where s.groupExpense.id in :expenseIds order by s.id")
+    List<ExpenseSplit> findByExpenseIds(@Param("expenseIds") Collection<Long> expenseIds);
+
+    void deleteByGroupExpenseId(Long groupExpenseId);
+
+    boolean existsByMemberId(Long memberId);
+}

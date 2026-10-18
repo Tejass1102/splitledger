@@ -12,8 +12,11 @@ import com.splitledger.backend.exception.BadRequestException;
 import com.splitledger.backend.exception.ConflictException;
 import com.splitledger.backend.exception.ForbiddenException;
 import com.splitledger.backend.exception.ResourceNotFoundException;
+import com.splitledger.backend.repository.ExpenseSplitRepository;
+import com.splitledger.backend.repository.GroupExpenseRepository;
 import com.splitledger.backend.repository.GroupMemberRepository;
 import com.splitledger.backend.repository.GroupRepository;
+import com.splitledger.backend.repository.SettlementRepository;
 import com.splitledger.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,9 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final GroupMemberRepository memberRepository;
     private final UserRepository userRepository;
+    private final GroupExpenseRepository groupExpenseRepository;
+    private final ExpenseSplitRepository splitRepository;
+    private final SettlementRepository settlementRepository;
 
     @Transactional
     public GroupDetailResponse create(Long userId, GroupRequest request) {
@@ -84,7 +90,10 @@ public class GroupService {
     public void delete(Long userId, Long groupId) {
         ExpenseGroup group = findVisible(userId, groupId);
         requireCreator(userId, group, "delete the group");
-        // Step 10 will block this when the group has expenses or settlements.
+        if (groupExpenseRepository.existsByGroupId(groupId)
+                || settlementRepository.existsByGroupId(groupId)) {
+            throw new ConflictException("This group has expenses or settlements and can't be deleted");
+        }
         memberRepository.deleteByGroupId(groupId);
         groupRepository.delete(group);
     }
@@ -144,7 +153,13 @@ public class GroupService {
         if (member.getUser() != null && member.getUser().getId().equals(group.getCreatedBy().getId())) {
             throw new ConflictException("The group creator can't be removed");
         }
-        // Step 10 will block this when the member has expenses, splits or settlements.
+        boolean inUse = groupExpenseRepository.existsByPaidById(memberId)
+                || splitRepository.existsByMemberId(memberId)
+                || settlementRepository.existsByFromMemberIdOrToMemberId(memberId, memberId);
+        if (inUse) {
+            throw new ConflictException(
+                    "This member is part of existing expenses or settlements and can't be removed");
+        }
         memberRepository.delete(member);
     }
 
