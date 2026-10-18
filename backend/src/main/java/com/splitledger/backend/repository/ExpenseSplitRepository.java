@@ -1,5 +1,6 @@
 package com.splitledger.backend.repository;
 
+import com.splitledger.backend.dto.MemberAmount;
 import com.splitledger.backend.entity.ExpenseSplit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,9 @@ public interface ExpenseSplitRepository extends JpaRepository<ExpenseSplit, Long
     void deleteByGroupExpenseId(Long groupExpenseId);
 
     boolean existsByMemberId(Long memberId);
+
+    // What each member owes in total across this group's expenses
+    @Query("select new com.splitledger.backend.dto.MemberAmount(s.member.id, sum(s.shareAmount)) "
+            + "from ExpenseSplit s where s.groupExpense.group.id = :groupId group by s.member.id")
+    List<MemberAmount> sumSharesByMember(@Param("groupId") Long groupId);
 }
