@@ -1,6 +1,7 @@
 package com.splitledger.backend.controller;
 
 import com.splitledger.backend.dto.AuthResponse;
+import com.splitledger.backend.dto.GoogleLoginRequest;
 import com.splitledger.backend.dto.LoginRequest;
 import com.splitledger.backend.dto.RegisterRequest;
 import com.splitledger.backend.service.AuthService;
@@ -24,5 +25,10 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @PostMapping("/google")
+    public AuthResponse google(@Valid @RequestBody GoogleLoginRequest request) {
+        return authService.loginWithGoogle(request);
     }
 }
