@@ -25,3 +25,5 @@ app:
     expiration-ms: 86400000   # 24 hours
   google:
     client-id: ${GOOGLE_CLIENT_ID}   # public identifier, not a secret: it only says who a Google token must be issued for
+  cors:
+    allowed-origins: http://localhost:5173
