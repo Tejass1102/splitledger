@@ -33,6 +33,13 @@ export function AuthProvider({ children }) {
         setUser(null)
     }, [])
 
+    // Merge changed fields (e.g. a new name) into the logged-in user, keeping the same token
+    const updateUser = useCallback((changes) => {
+        const updated = { ...readStoredUser(), ...changes }
+        localStorage.setItem(USER_KEY, JSON.stringify(updated))
+        setUser(updated)
+    }, [])
+
     // If any protected call returns 401, drop the session
     useEffect(() => {
         setUnauthorizedHandler(logout)
@@ -61,8 +68,8 @@ export function AuthProvider({ children }) {
     )
 
     const value = useMemo(
-        () => ({ user, login, register, loginWithGoogle, logout }),
-        [user, login, register, loginWithGoogle, logout],
+        () => ({ user, login, register, loginWithGoogle, logout, updateUser }),
+        [user, login, register, loginWithGoogle, logout, updateUser],
     )
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
