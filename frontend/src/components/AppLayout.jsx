@@ -7,6 +7,9 @@ import SalaryBanner from './SalaryBanner'
 // Later parts add one entry here for each new page
 const NAV_ITEMS = [
     { to: '/', label: 'Dashboard', end: true },
+    { to: '/expenses', label: 'Expenses', end: false },
+    { to: '/incomes', label: 'Incomes', end: false },
+    { to: '/categories', label: 'Categories', end: false },
     { to: '/profile', label: 'Profile', end: false },
 ]
 

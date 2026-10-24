@@ -49,3 +49,23 @@ export function ordinal(n) {
             return `${n}th`
     }
 }
+
+// Date -> "2026-10-24" using the browser's local day
+export function toIsoDate(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${date.getFullYear()}-${month}-${day}`
+}
+
+export function todayIso() {
+    return toIsoDate(new Date())
+}
+
+// { from: first day of this month, to: last day of this month }
+export function currentMonthRange() {
+    const now = new Date()
+    return {
+        from: toIsoDate(new Date(now.getFullYear(), now.getMonth(), 1)),
+        to: toIsoDate(new Date(now.getFullYear(), now.getMonth() + 1, 0)),
+    }
+}
