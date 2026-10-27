@@ -1,1 +1,120 @@
 @import "tailwindcss";
+
+/* Lets us write dark:... for rare exceptions. Not needed for normal styling. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Raw theme values ---------- */
+:root {
+    --c-page: #f6f8fc;
+    --c-surface: #ffffff;
+    --c-subtle: #f1f5f9;
+    --c-elevated: #ffffff;
+
+    --c-ink: #111827;
+    --c-muted: #64748b;
+    --c-faint: #94a3b8; /* placeholders, disabled, decorative only */
+
+    --c-line: #e2e8f0;
+    --c-line-strong: #cbd5e1;
+
+    --c-brand: #4f46e5;
+    --c-brand-hover: #4338ca;
+    --c-brand-soft: #eef2ff;
+    --c-on-brand: #ffffff;
+
+    --c-positive: #16a34a;
+    --c-positive-ink: #15803d;
+    --c-positive-soft: #f0fdf4;
+
+    --c-negative: #dc2626;
+    --c-negative-hover: #b91c1c;
+    --c-negative-soft: #fef2f2;
+    --c-on-negative: #ffffff;
+
+    --c-warning: #d97706;
+    --c-warning-ink: #92400e;
+    --c-warning-soft: #fffbeb;
+}
+
+.dark {
+    --c-page: #0b1120;
+    --c-surface: #172033;
+    --c-subtle: #111827;
+    --c-elevated: #1e293b;
+
+    --c-ink: #f1f5f9;
+    --c-muted: #94a3b8;
+    --c-faint: #64748b;
+
+    --c-line: #334155;
+    --c-line-strong: #475569;
+
+    --c-brand: #818cf8;
+    --c-brand-hover: #a5b4fc;
+    --c-brand-soft: rgb(129 140 248 / 0.16);
+    --c-on-brand: #0b1120;
+
+    --c-positive: #4ade80;
+    --c-positive-ink: #4ade80;
+    --c-positive-soft: rgb(74 222 128 / 0.12);
+
+    --c-negative: #f87171;
+    --c-negative-hover: #fca5a5;
+    --c-negative-soft: rgb(248 113 113 / 0.12);
+    --c-on-negative: #0b1120;
+
+    --c-warning: #fbbf24;
+    --c-warning-ink: #fcd34d;
+    --c-warning-soft: rgb(251 191 36 / 0.12);
+}
+
+/* ---------- Tailwind tokens (inline = utilities read the live variable) ---------- */
+@theme inline {
+    --color-page: var(--c-page);
+    --color-surface: var(--c-surface);
+    --color-subtle: var(--c-subtle);
+    --color-elevated: var(--c-elevated);
+
+    --color-ink: var(--c-ink);
+    --color-muted: var(--c-muted);
+    --color-faint: var(--c-faint);
+
+    --color-line: var(--c-line);
+    --color-line-strong: var(--c-line-strong);
+
+    --color-brand: var(--c-brand);
+    --color-brand-hover: var(--c-brand-hover);
+    --color-brand-soft: var(--c-brand-soft);
+    --color-on-brand: var(--c-on-brand);
+
+    --color-positive: var(--c-positive);
+    --color-positive-ink: var(--c-positive-ink);
+    --color-positive-soft: var(--c-positive-soft);
+
+    --color-negative: var(--c-negative);
+    --color-negative-hover: var(--c-negative-hover);
+    --color-negative-soft: var(--c-negative-soft);
+    --color-on-negative: var(--c-on-negative);
+
+    --color-warning: var(--c-warning);
+    --color-warning-ink: var(--c-warning-ink);
+    --color-warning-soft: var(--c-warning-soft);
+}
+
+@theme {
+    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Base ---------- */
+@layer base {
+    html {
+        color-scheme: light;
+    }
+    html.dark {
+        color-scheme: dark;
+    }
+    body {
+        @apply bg-page text-ink font-sans antialiased tabular-nums;
+    }
+}
