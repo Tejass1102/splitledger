@@ -5,6 +5,7 @@ import Alert from '../components/Alert'
 import Card from '../components/Card'
 import CategoryForm from '../components/categories/CategoryForm'
 import CategoryRow from '../components/categories/CategoryRow'
+import Spinner from '../components/Spinner'
 
 const TABS = [
     { type: 'EXPENSE', label: 'Expense' },
@@ -112,7 +113,7 @@ export default function CategoriesPage() {
                 <CategoryForm key={type} type={type} onCreated={handleCreated} />
             </Card>
 
-            {loading && <p className="text-sm text-slate-500">Loading categories...</p>}
+            {loading && <Spinner label="Loading categories..." />}
 
             {!loading && error && (
                 <div className="space-y-3">

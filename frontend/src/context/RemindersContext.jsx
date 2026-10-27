@@ -9,6 +9,11 @@ const RemindersContext = createContext(null)
 export function RemindersProvider({ children }) {
     const [pendingCycles, setPendingCycles] = useState([])
     const [unreadCount, setUnreadCount] = useState(0)
+    // Goes up whenever something changes the user's money figures (for example a confirmed
+    // salary), so pages that show totals, like the dashboard, know to reload.
+    const [dataVersion, setDataVersion] = useState(0)
+
+    const notifyDataChanged = useCallback(() => setDataVersion((version) => version + 1), [])
 
     // Reloads both values. A failed load keeps the old values; the next poll tries again.
     const refresh = useCallback(async () => {
@@ -41,8 +46,8 @@ export function RemindersProvider({ children }) {
     }, [refresh])
 
     const value = useMemo(
-        () => ({ pendingCycles, unreadCount, refresh }),
-        [pendingCycles, unreadCount, refresh],
+        () => ({ pendingCycles, unreadCount, refresh, dataVersion, notifyDataChanged }),
+        [pendingCycles, unreadCount, refresh, dataVersion, notifyDataChanged],
     )
 
     return <RemindersContext.Provider value={value}>{children}</RemindersContext.Provider>

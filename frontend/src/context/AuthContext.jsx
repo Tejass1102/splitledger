@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { authApi } from '../api/auth'
 import { setUnauthorizedHandler, tokenStore } from '../api/client'
+import { useToast } from './ToastContext'
 
 const USER_KEY = 'splitledger.user'
 
@@ -17,6 +18,7 @@ function readStoredUser() {
 
 export function AuthProvider({ children }) {
     // Logged in only if both the token and the stored user exist
+    const toast = useToast()
     const [user, setUser] = useState(() => (tokenStore.get() ? readStoredUser() : null))
 
     const saveSession = useCallback((auth) => {
@@ -40,11 +42,15 @@ export function AuthProvider({ children }) {
         setUser(updated)
     }, [])
 
-    // If any protected call returns 401, drop the session
+    // If a protected call returns 401 (expired or invalid token), drop the session and say why
     useEffect(() => {
-        setUnauthorizedHandler(logout)
+        setUnauthorizedHandler(() => {
+            if (!tokenStore.get()) return // already logged out (for example with the button)
+            logout()
+            toast.info('Your session has expired. Please log in again.')
+        })
         return () => setUnauthorizedHandler(null)
-    }, [logout])
+    }, [logout, toast])
 
     const login = useCallback(
         async (email, password) => {

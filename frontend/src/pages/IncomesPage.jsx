@@ -9,6 +9,7 @@ import IncomeForm from '../components/incomes/IncomeForm'
 import IncomeItem from '../components/incomes/IncomeItem'
 import SelectField from '../components/SelectField'
 import { currentMonthRange, formatMoney } from '../utils/format'
+import Spinner from '../components/Spinner'
 
 function byName(a, b) {
     return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
@@ -214,7 +215,7 @@ export default function IncomesPage() {
 
             {!rangeError && (
                 <Card title="Your incomes">
-                    {loading && <p className="text-sm text-slate-500">Loading incomes...</p>}
+                    {loading && <Spinner label="Loading incomes..." />}
 
                     {!loading && result.error && (
                         <div className="space-y-3">

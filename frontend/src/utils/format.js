@@ -69,3 +69,24 @@ export function currentMonthRange() {
         to: toIsoDate(new Date(now.getFullYear(), now.getMonth() + 1, 0)),
     }
 }
+
+// Date -> "2026-10" using the browser's local month
+export function toMonthKey(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+}
+
+export function currentMonthKey() {
+    return toMonthKey(new Date())
+}
+
+// shiftMonth("2026-12", 1) -> "2027-01", shiftMonth("2026-01", -1) -> "2025-12"
+export function shiftMonth(key, delta) {
+    const [year, month] = key.split('-').map(Number)
+    return toMonthKey(new Date(year, month - 1 + delta, 1))
+}
+
+// "2026-10" -> "October 2026"
+export function formatMonthKey(key) {
+    const [year, month] = key.split('-').map(Number)
+    return monthFormat.format(new Date(year, month - 1, 1))
+}

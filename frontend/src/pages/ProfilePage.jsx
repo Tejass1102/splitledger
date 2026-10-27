@@ -5,6 +5,7 @@ import Alert from '../components/Alert'
 import NameForm from '../components/profile/NameForm'
 import SalaryForm from '../components/profile/SalaryForm'
 import { useAuth } from '../context/AuthContext'
+import Spinner from '../components/Spinner'
 
 export default function ProfilePage() {
     const { updateUser } = useAuth()
@@ -52,7 +53,7 @@ export default function ProfilePage() {
         <div className="mx-auto max-w-2xl space-y-6">
             <h1 className="text-2xl font-bold text-slate-900">Profile</h1>
 
-            {loading && <p className="text-sm text-slate-500">Loading your profile...</p>}
+            {loading && <Spinner label="Loading your profile..." />}
 
             {!loading && error && (
                 <div className="space-y-3">

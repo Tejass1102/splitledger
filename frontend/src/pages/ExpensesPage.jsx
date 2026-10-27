@@ -9,6 +9,7 @@ import ExpenseItem from '../components/expenses/ExpenseItem'
 import FormField from '../components/FormField'
 import SelectField from '../components/SelectField'
 import { currentMonthRange, formatMoney } from '../utils/format'
+import Spinner from '../components/Spinner'
 
 function byName(a, b) {
     return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
@@ -193,7 +194,7 @@ export default function ExpensesPage() {
 
             {!rangeError && (
                 <Card title="Your expenses">
-                    {loading && <p className="text-sm text-slate-500">Loading expenses...</p>}
+                    {loading && <Spinner label="Loading expenses..." />}
 
                     {!loading && result.error && (
                         <div className="space-y-3">

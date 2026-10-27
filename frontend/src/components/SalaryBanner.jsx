@@ -124,11 +124,13 @@ function PendingSalaryCard({ cycle, onDone }) {
 }
 
 export default function SalaryBanner() {
-    const { pendingCycles, refresh } = useReminders()
+    const { pendingCycles, refresh, notifyDataChanged } = useReminders()
     const [notice, setNotice] = useState(null) // { type: 'success' | 'error', text }
 
     async function handleDone(result) {
         setNotice(result)
+        // A confirmed salary creates an income, so pages with totals should reload
+        if (result.type === 'success') notifyDataChanged()
         await refresh()
     }
 

@@ -13,6 +13,12 @@ export function setUnauthorizedHandler(handler) {
     onUnauthorized = handler
 }
 
+// Called when the server itself fails (HTTP 5xx), so the app can show a toast
+let onServerError = null
+export function setServerErrorHandler(handler) {
+    onServerError = handler
+}
+
 // Wraps the backend's ProblemDetail: { status, title, detail, errors: { field: message } }
 export class ApiError extends Error {
     constructor(status, problem) {
@@ -31,7 +37,8 @@ export function describeError(err) {
     return { message: 'Something went wrong. Please try again.', fieldErrors: {} }
 }
 
-export async function request(path, { method = 'GET', body, auth = true } = {}) {
+// quiet: true is for background calls (such as polling); a server error then shows no toast
+export async function request(path, { method = 'GET', body, auth = true, quiet = false } = {}) {
     const headers = {}
     if (body !== undefined) headers['Content-Type'] = 'application/json'
 
@@ -64,13 +71,14 @@ export async function request(path, { method = 'GET', body, auth = true } = {}) 
     if (!response.ok) {
         // Only logout on 401 for calls that carried a token (not for a wrong password at login)
         if (response.status === 401 && auth && onUnauthorized) onUnauthorized()
+        if (response.status >= 500 && !quiet && onServerError) onServerError()
         throw new ApiError(response.status, data)
     }
     return data
 }
 
 export const api = {
-    get: (path) => request(path),
+    get: (path, options) => request(path, options),
     post: (path, body) => request(path, { method: 'POST', body }),
     put: (path, body) => request(path, { method: 'PUT', body }),
     patch: (path, body) => request(path, { method: 'PATCH', body }),
