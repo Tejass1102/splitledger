@@ -79,7 +79,7 @@ export default function GroupsPage() {
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-slate-900">Groups</h1>
+            <h1 className="text-2xl font-bold text-ink">Groups</h1>
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}
 
@@ -98,7 +98,7 @@ export default function GroupsPage() {
                         <Alert type="error">{error}</Alert>
                         <button
                             onClick={reload}
-                            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
                         >
                             Retry
                         </button>
@@ -106,13 +106,13 @@ export default function GroupsPage() {
                 )}
 
                 {!loading && !error && groups.length === 0 && (
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-muted">
                         You aren&apos;t in any groups yet. Create one above.
                     </p>
                 )}
 
                 {!loading && !error && groups.length > 0 && (
-                    <ul className="divide-y divide-slate-100">
+                    <ul className="divide-y divide-line">
                         {groups.map((group) => (
                             <GroupItem
                                 key={group.id}

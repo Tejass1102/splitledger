@@ -55,7 +55,7 @@ export default function LoginPage() {
     return (
         <AuthLayout title="Welcome back" subtitle="Log in to track your expenses and groups.">
             {error && (
-                <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+                <div className="mb-4 rounded-lg bg-negative-soft px-4 py-3 text-sm text-negative" role="alert">
                     {error}
                 </div>
             )}
@@ -82,23 +82,23 @@ export default function LoginPage() {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="w-full rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                 >
                     {submitting ? 'Logging in...' : 'Log in'}
                 </button>
             </form>
 
-            <div className="my-6 flex items-center gap-3 text-xs text-slate-400">
-                <div className="h-px flex-1 bg-slate-200" />
+            <div className="my-6 flex items-center gap-3 text-xs text-faint">
+                <div className="h-px flex-1 bg-line" />
                 OR
-                <div className="h-px flex-1 bg-slate-200" />
+                <div className="h-px flex-1 bg-line" />
             </div>
 
             <GoogleSignInButton onCredential={handleGoogle} onError={setError} disabled={submitting} />
 
-            <p className="mt-6 text-center text-sm text-slate-500">
+            <p className="mt-6 text-center text-sm text-muted">
                 New here?{' '}
-                <Link to="/register" className="font-medium text-indigo-600 hover:underline">
+                <Link to="/register" className="font-medium text-brand hover:underline">
                     Create an account
                 </Link>
             </p>

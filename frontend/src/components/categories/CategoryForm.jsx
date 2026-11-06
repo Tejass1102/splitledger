@@ -51,7 +51,7 @@ export default function CategoryForm({ type, onCreated }) {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="mt-6 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="mt-6 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                 >
                     {submitting ? 'Adding...' : 'Add category'}
                 </button>

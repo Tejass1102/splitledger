@@ -19,7 +19,7 @@ function LoadError({ message, onRetry }) {
             <Alert type="error">{message}</Alert>
             <button
                 onClick={onRetry}
-                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
             >
                 Retry
             </button>
@@ -78,7 +78,7 @@ export default function SettlementsSection({ group, currentUserId, moneyVersion 
 
     return (
         <section className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-900">Balances and settlements</h2>
+            <h2 className="text-xl font-bold text-ink">Balances and settlements</h2>
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}
 
@@ -133,10 +133,10 @@ export default function SettlementsSection({ group, currentUserId, moneyVersion 
                 {!history.loaded && <Spinner label="Loading settlements..." />}
                 {history.error && <LoadError message={history.error} onRetry={reload} />}
                 {history.data && settlements.length === 0 && (
-                    <p className="text-sm text-slate-500">No settlements recorded yet.</p>
+                    <p className="text-sm text-muted">No settlements recorded yet.</p>
                 )}
                 {settlements.length > 0 && (
-                    <ul className="divide-y divide-slate-100">
+                    <ul className="divide-y divide-line">
                         {settlements.map((settlement) => (
                             <SettlementItem
                                 key={settlement.id}

@@ -5,9 +5,9 @@ const DURATION_MS = 6000
 const MAX_TOASTS = 4
 
 const STYLES = {
-    error: 'bg-red-50 text-red-800 ring-red-200',
-    success: 'bg-green-50 text-green-800 ring-green-200',
-    info: 'bg-white text-slate-800 ring-slate-200',
+    error: 'bg-negative-soft text-negative ring-negative/30',
+    success: 'bg-positive-soft text-positive-ink ring-positive/30',
+    info: 'bg-surface text-ink ring-line',
 }
 
 const ToastContext = createContext(null)

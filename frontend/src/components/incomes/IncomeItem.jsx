@@ -5,9 +5,9 @@ import { formatDate, formatMoney } from '../../utils/format'
 import IncomeForm from './IncomeForm'
 
 const secondaryButton =
-    'rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60'
+    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
 const dangerButton =
-    'rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60'
+    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 export default function IncomeItem({ income, categories, onSaved, onDeleted, onStale }) {
     const [mode, setMode] = useState('view') // 'view' | 'edit' | 'confirmDelete'
@@ -38,7 +38,7 @@ export default function IncomeItem({ income, categories, onSaved, onDeleted, onS
     if (mode === 'edit') {
         return (
             <li className="py-3">
-                <div className="rounded-xl bg-slate-50 p-4">
+                <div className="rounded-xl bg-subtle p-4">
                     <IncomeForm
                         income={income}
                         categories={categories}
@@ -59,25 +59,25 @@ export default function IncomeItem({ income, categories, onSaved, onDeleted, onS
         <li className="px-1 py-3">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                    <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-900">
+                    <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-ink">
                         {formatMoney(income.amount)}
                         {isSalary && (
-                            <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
+                            <span className="rounded-full bg-positive-soft px-2.5 py-0.5 text-xs font-medium text-positive-ink">
                 Salary
               </span>
                         )}
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-500">
+                    <p className="mt-0.5 text-xs text-muted">
                         {formatDate(income.incomeDate)} · {income.categoryName ?? 'No category'}
                     </p>
-                    {income.note && <p className="mt-1 break-words text-sm text-slate-600">{income.note}</p>}
+                    {income.note && <p className="mt-1 break-words text-sm text-muted">{income.note}</p>}
                 </div>
 
                 {isSalary ? (
-                    <span className="text-xs text-slate-400">Managed by salary confirmation</span>
+                    <span className="text-xs text-faint">Managed by salary confirmation</span>
                 ) : mode === 'confirmDelete' ? (
                     <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm text-slate-600">Delete this income?</span>
+                        <span className="text-sm text-muted">Delete this income?</span>
                         <button onClick={handleDelete} disabled={busy} className={dangerButton}>
                             {busy ? 'Deleting...' : 'Yes, delete'}
                         </button>
@@ -110,7 +110,7 @@ export default function IncomeItem({ income, categories, onSaved, onDeleted, onS
             </div>
 
             {error && (
-                <p role="alert" className="mt-2 text-sm text-red-600">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}

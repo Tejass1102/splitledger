@@ -1,7 +1,7 @@
 const TONES = {
-    indigo: 'bg-indigo-50 text-indigo-700',
-    slate: 'bg-slate-100 text-slate-600',
-    amber: 'bg-amber-50 text-amber-700',
+    indigo: 'bg-brand-soft text-brand',
+    slate: 'bg-subtle text-muted',
+    amber: 'bg-warning-soft text-warning-ink',
 }
 
 export default function Badge({ children, tone = 'slate' }) {

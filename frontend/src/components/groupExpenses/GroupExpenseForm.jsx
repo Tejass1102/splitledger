@@ -311,7 +311,7 @@ export default function GroupExpenseForm({
                 />
                 <p
                     className={`mt-1 text-right text-xs ${
-                        form.description.length > DESCRIPTION_MAX ? 'text-red-600' : 'text-slate-400'
+                        form.description.length > DESCRIPTION_MAX ? 'text-negative' : 'text-faint'
                     }`}
                 >
                     {form.description.length}/{DESCRIPTION_MAX}
@@ -334,8 +334,8 @@ export default function GroupExpenseForm({
             </SelectField>
 
             <div>
-                <p className="mb-2 text-sm font-medium text-slate-700">How to split</p>
-                <div className="inline-flex flex-wrap rounded-lg bg-slate-100 p-1" role="tablist">
+                <p className="mb-2 text-sm font-medium text-ink">How to split</p>
+                <div className="inline-flex flex-wrap rounded-lg bg-subtle p-1" role="tablist">
                     {SPLIT_TYPES.map((type) => (
                         <button
                             key={type.key}
@@ -344,7 +344,7 @@ export default function GroupExpenseForm({
                             aria-selected={form.splitType === type.key}
                             onClick={() => changeSplitType(type.key)}
                             className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                                form.splitType === type.key ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+                                form.splitType === type.key ? 'bg-surface text-ink shadow-sm' : 'text-muted'
                             }`}
                         >
                             {type.label}
@@ -355,48 +355,48 @@ export default function GroupExpenseForm({
 
             <div>
                 <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
-                    <p className="text-sm font-medium text-slate-700">
+                    <p className="text-sm font-medium text-ink">
                         Split between ({included.length} of {members.length})
                     </p>
                     <div className="flex gap-3 text-xs">
                         <button
                             type="button"
                             onClick={() => setAll(true)}
-                            className="font-medium text-indigo-700 hover:underline"
+                            className="font-medium text-brand hover:underline"
                         >
                             Select all
                         </button>
                         <button
                             type="button"
                             onClick={() => setAll(false)}
-                            className="font-medium text-indigo-700 hover:underline"
+                            className="font-medium text-brand hover:underline"
                         >
                             Clear
                         </button>
                     </div>
                 </div>
 
-                {fieldErrors.splits && <p className="mb-1 text-sm text-red-600">{fieldErrors.splits}</p>}
+                {fieldErrors.splits && <p className="mb-1 text-sm text-negative">{fieldErrors.splits}</p>}
 
-                <ul className="divide-y divide-slate-100 rounded-lg border border-slate-200 px-3">
+                <ul className="divide-y divide-line rounded-lg border border-line px-3">
                     {members.map((m) => {
                         const on = isIncluded(m.id)
                         const share = shareById[m.id]
                         return (
                             <li key={m.id} className="flex flex-wrap items-center gap-3 py-2.5">
-                                <label className="flex min-w-0 flex-1 basis-40 items-center gap-2 text-sm text-slate-900">
+                                <label className="flex min-w-0 flex-1 basis-40 items-center gap-2 text-sm text-ink">
                                     <input
                                         type="checkbox"
                                         checked={on}
                                         onChange={() => toggleMember(m.id)}
-                                        className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                                        className="h-4 w-4 rounded border-line-strong text-brand"
                                     />
                                     <span className="truncate">{m.displayName}</span>
                                 </label>
 
                                 {on && form.splitType !== 'EQUAL' && (
                                     <div className="flex items-center gap-1.5">
-                                        {form.splitType === 'EXACT' && <span className="text-sm text-slate-500">₹</span>}
+                                        {form.splitType === 'EXACT' && <span className="text-sm text-muted">₹</span>}
                                         <input
                                             type="number"
                                             step="0.01"
@@ -405,24 +405,24 @@ export default function GroupExpenseForm({
                                             aria-label={`${form.splitType === 'EXACT' ? 'Amount' : 'Percentage'} for ${m.displayName}`}
                                             value={form.values[m.id] ?? ''}
                                             onChange={(e) => setValue(m.id, e.target.value)}
-                                            className={`w-28 rounded-lg border px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 ${
-                                                rowErrors[m.id] ? 'border-red-400' : 'border-slate-300'
+                                            className={`w-28 rounded-lg border px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand ${
+                                                rowErrors[m.id] ? 'border-negative' : 'border-line-strong'
                                             }`}
                                         />
                                         {form.splitType === 'PERCENTAGE' && (
-                                            <span className="text-sm text-slate-500">%</span>
+                                            <span className="text-sm text-muted">%</span>
                                         )}
                                     </div>
                                 )}
 
                                 {on && share !== undefined && form.splitType !== 'EXACT' && (
-                                    <span className="ml-auto text-sm text-slate-600">
+                                    <span className="ml-auto text-sm text-muted">
                     {form.splitType === 'PERCENTAGE' ? `= ${formatMinor(share)}` : formatMinor(share)}
                   </span>
                                 )}
 
                                 {rowErrors[m.id] && (
-                                    <p className="basis-full text-sm text-red-600">{rowErrors[m.id]}</p>
+                                    <p className="basis-full text-sm text-negative">{rowErrors[m.id]}</p>
                                 )}
                             </li>
                         )
@@ -430,12 +430,12 @@ export default function GroupExpenseForm({
                 </ul>
 
                 {summary && (
-                    <p className={`mt-2 text-sm ${summary.ok ? 'text-green-700' : 'text-amber-700'}`}>
+                    <p className={`mt-2 text-sm ${summary.ok ? 'text-positive-ink' : 'text-warning-ink'}`}>
                         {summary.text}
                     </p>
                 )}
                 {editing && form.splitType === 'PERCENTAGE' && (
-                    <p className="mt-2 text-xs text-slate-500">
+                    <p className="mt-2 text-xs text-muted">
                         Percentages are worked out from the saved shares, so check that they add up to 100.
                     </p>
                 )}
@@ -445,7 +445,7 @@ export default function GroupExpenseForm({
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                 >
                     {submitting ? 'Saving...' : editing ? 'Save changes' : 'Add expense'}
                 </button>
@@ -454,7 +454,7 @@ export default function GroupExpenseForm({
                         type="button"
                         onClick={onCancel}
                         disabled={submitting}
-                        className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle disabled:opacity-60"
                     >
                         Cancel
                     </button>

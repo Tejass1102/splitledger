@@ -54,15 +54,15 @@ function PendingSalaryCard({ cycle, onDone }) {
     const hasFieldErrors = Object.keys(fieldErrors).length > 0
 
     return (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-            <p className="text-sm font-semibold text-amber-900">Did your {month} salary arrive?</p>
-            <p className="mt-1 text-sm text-amber-800">
+        <div className="rounded-xl border border-warning/30 bg-warning-soft p-4">
+            <p className="text-sm font-semibold text-warning-ink">Did your {month} salary arrive?</p>
+            <p className="mt-1 text-sm text-warning-ink">
                 Expected {formatMoney(cycle.expectedAmount)} on {formatDate(cycle.creditDate)}. Confirming
                 records it as income dated today.
             </p>
 
             {error && !hasFieldErrors && (
-                <p role="alert" className="mt-2 text-sm text-red-700">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}
@@ -83,7 +83,7 @@ function PendingSalaryCard({ cycle, onDone }) {
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                            className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                         >
                             {submitting ? 'Confirming...' : 'Confirm'}
                         </button>
@@ -95,7 +95,7 @@ function PendingSalaryCard({ cycle, onDone }) {
                                 setError('')
                                 setFieldErrors({})
                             }}
-                            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                            className="rounded-lg border border-line-strong bg-surface px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle disabled:opacity-60"
                         >
                             Cancel
                         </button>
@@ -106,14 +106,14 @@ function PendingSalaryCard({ cycle, onDone }) {
                     <button
                         onClick={() => confirm(undefined)}
                         disabled={submitting}
-                        className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                        className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                     >
                         {submitting ? 'Confirming...' : 'Yes, it arrived'}
                     </button>
                     <button
                         onClick={() => setEditing(true)}
                         disabled={submitting}
-                        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                        className="rounded-lg border border-line-strong bg-surface px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle disabled:opacity-60"
                     >
                         Different amount
                     </button>
@@ -137,7 +137,7 @@ export default function SalaryBanner() {
     if (!notice && pendingCycles.length === 0) return null
 
     const noticeStyle =
-        notice?.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+        notice?.type === 'success' ? 'bg-positive-soft text-positive-ink' : 'bg-negative-soft text-negative'
 
     return (
         <div className="mb-6 space-y-3">

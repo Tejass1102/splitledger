@@ -1,8 +1,8 @@
 export default function Spinner({ label = 'Loading...' }) {
     return (
-        <div role="status" className="flex items-center gap-2 text-sm text-slate-500">
+        <div role="status" className="flex items-center gap-2 text-sm text-muted">
             <svg
-                className="h-4 w-4 animate-spin text-indigo-600 motion-reduce:animate-none"
+                className="h-4 w-4 animate-spin text-brand motion-reduce:animate-none"
                 viewBox="0 0 24 24"
                 fill="none"
                 aria-hidden="true"

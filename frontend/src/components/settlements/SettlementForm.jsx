@@ -131,7 +131,7 @@ export default function SettlementForm({ groupId, members, initial, onSaved, onS
             <button
                 type="submit"
                 disabled={submitting}
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
             >
                 {submitting ? 'Recording...' : 'Record settlement'}
             </button>

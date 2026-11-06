@@ -55,7 +55,7 @@ export default function GroupForm({ onCreated }) {
                     />
                     <p
                         className={`mt-1 text-right text-xs ${
-                            name.length > NAME_MAX ? 'text-red-600' : 'text-slate-400'
+                            name.length > NAME_MAX ? 'text-negative' : 'text-faint'
                         }`}
                     >
                         {name.length}/{NAME_MAX}
@@ -64,7 +64,7 @@ export default function GroupForm({ onCreated }) {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="mt-6 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="mt-6 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                 >
                     {submitting ? 'Creating...' : 'Create group'}
                 </button>

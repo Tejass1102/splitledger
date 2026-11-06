@@ -22,7 +22,7 @@ export default function MembersCard({
                     : 'Anyone in the group can add members. Only the creator can remove members or link guests.'
             }
         >
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-line">
                 {group.members.map((member) => (
                     <MemberRow
                         key={member.id}
@@ -38,7 +38,7 @@ export default function MembersCard({
                 ))}
             </ul>
 
-            <div className="mt-6 border-t border-slate-100 pt-5">
+            <div className="mt-6 border-t border-line pt-5">
                 <AddMemberForm groupId={group.id} onAdded={onAdded} onRefresh={onRefresh} />
             </div>
         </Card>

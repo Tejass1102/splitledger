@@ -128,7 +128,7 @@ export default function ExpensesPage() {
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-slate-900">Expenses</h1>
+            <h1 className="text-2xl font-bold text-ink">Expenses</h1>
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}
 
@@ -178,13 +178,13 @@ export default function ExpensesPage() {
                     <div className="flex gap-2">
                         <button
                             onClick={showThisMonth}
-                            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
                         >
                             This month
                         </button>
                         <button
                             onClick={showAllTime}
-                            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
                         >
                             All time
                         </button>
@@ -201,7 +201,7 @@ export default function ExpensesPage() {
                             <Alert type="error">{result.error}</Alert>
                             <button
                                 onClick={refresh}
-                                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
                             >
                                 Retry
                             </button>
@@ -209,18 +209,18 @@ export default function ExpensesPage() {
                     )}
 
                     {!loading && !result.error && expenses.length === 0 && (
-                        <p className="text-sm text-slate-500">No expenses match these filters.</p>
+                        <p className="text-sm text-muted">No expenses match these filters.</p>
                     )}
 
                     {!loading && !result.error && expenses.length > 0 && (
                         <>
-                            <p className="mb-2 text-sm text-slate-600">
+                            <p className="mb-2 text-sm text-muted">
                                 {expenses.length} {expenses.length === 1 ? 'expense' : 'expenses'} · Total{' '}
-                                <span className="font-semibold text-slate-900">
+                                <span className="font-semibold text-ink">
                   {formatMoney(totalPaise / 100)}
                 </span>
                             </p>
-                            <ul className="divide-y divide-slate-100">
+                            <ul className="divide-y divide-line">
                                 {expenses.map((expense) => (
                                     <ExpenseItem
                                         key={expense.id}

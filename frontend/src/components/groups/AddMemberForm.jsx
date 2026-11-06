@@ -60,9 +60,9 @@ export default function AddMemberForm({ groupId, onAdded, onRefresh }) {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <h3 className="text-sm font-semibold text-slate-900">Add a member</h3>
+            <h3 className="text-sm font-semibold text-ink">Add a member</h3>
 
-            <div className="inline-flex rounded-lg bg-slate-100 p-1" role="tablist">
+            <div className="inline-flex rounded-lg bg-subtle p-1" role="tablist">
                 {MODES.map((m) => (
                     <button
                         key={m.key}
@@ -71,7 +71,7 @@ export default function AddMemberForm({ groupId, onAdded, onRefresh }) {
                         aria-selected={mode === m.key}
                         onClick={() => switchMode(m.key)}
                         className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                            mode === m.key ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+                            mode === m.key ? 'bg-surface text-ink shadow-sm' : 'text-muted'
                         }`}
                     >
                         {m.label}
@@ -79,7 +79,7 @@ export default function AddMemberForm({ groupId, onAdded, onRefresh }) {
                 ))}
             </div>
 
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-muted">
                 {mode === 'email'
                     ? 'They need a SplitLedger account. You can add them by the email they signed up with.'
                     : 'Add someone without an account. You can link them to an account later.'}
@@ -102,7 +102,7 @@ export default function AddMemberForm({ groupId, onAdded, onRefresh }) {
                     {mode === 'name' && (
                         <p
                             className={`mt-1 text-right text-xs ${
-                                value.length > NAME_MAX ? 'text-red-600' : 'text-slate-400'
+                                value.length > NAME_MAX ? 'text-negative' : 'text-faint'
                             }`}
                         >
                             {value.length}/{NAME_MAX}
@@ -112,7 +112,7 @@ export default function AddMemberForm({ groupId, onAdded, onRefresh }) {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="mt-6 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="mt-6 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                 >
                     {submitting ? 'Adding...' : 'Add member'}
                 </button>

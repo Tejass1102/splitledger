@@ -63,12 +63,12 @@ export default function SalaryForm({ salary, onSaved }) {
             title="Salary"
             description="Tell SplitLedger your monthly salary and the day it is credited."
         >
-            <div className="mb-4 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-700">
+            <div className="mb-4 rounded-lg bg-subtle px-4 py-3 text-sm text-ink">
                 {salary ? (
                     <>
                         {formatMoney(salary.amount)} on the {ordinal(salary.creditDay)} of every month
                         {' · '}
-                        <span className={salary.active ? 'text-green-700' : 'text-amber-700'}>
+                        <span className={salary.active ? 'text-positive-ink' : 'text-warning-ink'}>
               {salary.active ? 'Active' : 'Paused'}
             </span>
                     </>
@@ -101,13 +101,13 @@ export default function SalaryForm({ salary, onSaved }) {
                     error={fieldErrors.creditDay}
                 />
 
-                <label className="flex items-center gap-2 text-sm text-slate-700">
+                <label className="flex items-center gap-2 text-sm text-ink">
                     <input
                         type="checkbox"
                         name="active"
                         checked={form.active}
                         onChange={handleChange}
-                        className="h-4 w-4 rounded border-slate-300 text-indigo-600"
+                        className="h-4 w-4 rounded border-line-strong text-brand"
                     />
                     Active (untick to pause salary reminders)
                 </label>
@@ -115,7 +115,7 @@ export default function SalaryForm({ salary, onSaved }) {
                 <button
                     type="submit"
                     disabled={saving}
-                    className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                 >
                     {saving ? 'Saving...' : 'Save salary settings'}
                 </button>

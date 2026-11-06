@@ -4,9 +4,9 @@ import { settlementsApi } from '../../api/settlements'
 import { formatDate, formatMoney } from '../../utils/format'
 
 const secondaryButton =
-    'rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60'
+    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
 const dangerButton =
-    'rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60'
+    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 // onDeleted() and onStale(message) report back to the section
 export default function SettlementItem({ settlement, group, currentUserId, onDeleted, onStale }) {
@@ -43,17 +43,17 @@ export default function SettlementItem({ settlement, group, currentUserId, onDel
         <li className="px-1 py-3">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                    <p className="text-sm text-slate-900">
+                    <p className="text-sm text-ink">
                         {fromYou ? 'You' : settlement.fromName} paid {toYou ? 'you' : settlement.toName}{' '}
                         <span className="font-semibold">{formatMoney(settlement.amount)}</span>
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-500">{formatDate(settlement.settledOn)}</p>
+                    <p className="mt-0.5 text-xs text-muted">{formatDate(settlement.settledOn)}</p>
                 </div>
 
                 {canDelete &&
                     (confirming ? (
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm text-slate-600">Delete this settlement?</span>
+                            <span className="text-sm text-muted">Delete this settlement?</span>
                             <button onClick={handleDelete} disabled={busy} className={dangerButton}>
                                 {busy ? 'Deleting...' : 'Yes, delete'}
                             </button>
@@ -75,7 +75,7 @@ export default function SettlementItem({ settlement, group, currentUserId, onDel
             </div>
 
             {error && (
-                <p role="alert" className="mt-2 text-sm text-red-600">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}

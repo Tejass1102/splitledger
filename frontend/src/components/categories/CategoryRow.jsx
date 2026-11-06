@@ -9,11 +9,11 @@ function messageFor(err) {
 }
 
 const primaryButton =
-    'rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60'
+    'rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60'
 const secondaryButton =
-    'rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60'
+    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
 const dangerButton =
-    'rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60'
+    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 // onStale(message) is called when the backend says the category no longer exists (404)
 export default function CategoryRow({ category, onUpdated, onDeleted, onStale }) {
@@ -73,7 +73,7 @@ export default function CategoryRow({ category, onUpdated, onDeleted, onStale })
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         autoFocus
-                        className="min-w-0 flex-1 basis-48 rounded-lg border border-slate-300 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="min-w-0 flex-1 basis-48 rounded-lg border border-line-strong px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand"
                     />
                     <button
                         type="submit"
@@ -88,15 +88,15 @@ export default function CategoryRow({ category, onUpdated, onDeleted, onStale })
                 </form>
             ) : (
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-sm font-medium text-slate-900">{category.name}</span>
+                    <span className="text-sm font-medium text-ink">{category.name}</span>
 
                     {category.builtIn ? (
-                        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">
+                        <span className="rounded-full bg-subtle px-2.5 py-0.5 text-xs font-medium text-muted">
               Default
             </span>
                     ) : mode === 'confirmDelete' ? (
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm text-slate-600">Delete this category?</span>
+                            <span className="text-sm text-muted">Delete this category?</span>
                             <button onClick={handleDelete} disabled={busy} className={dangerButton}>
                                 {busy ? 'Deleting...' : 'Yes, delete'}
                             </button>
@@ -130,7 +130,7 @@ export default function CategoryRow({ category, onUpdated, onDeleted, onStale })
             )}
 
             {error && (
-                <p role="alert" className="mt-2 text-sm text-red-600">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}

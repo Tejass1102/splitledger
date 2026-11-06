@@ -103,7 +103,7 @@ export default function GroupDetailPage() {
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
-            <Link to="/groups" className="text-sm font-medium text-indigo-700 hover:underline">
+            <Link to="/groups" className="text-sm font-medium text-brand hover:underline">
                 ← All groups
             </Link>
 
@@ -115,7 +115,7 @@ export default function GroupDetailPage() {
                     {status !== 404 && (
                         <button
                             onClick={retry}
-                            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
                         >
                             Retry
                         </button>
@@ -126,8 +126,8 @@ export default function GroupDetailPage() {
             {!loading && group && (
                 <>
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900">{group.name}</h1>
-                        <p className="mt-1 text-sm text-slate-500">
+                        <h1 className="text-2xl font-bold text-ink">{group.name}</h1>
+                        <p className="mt-1 text-sm text-muted">
                             Created by{' '}
                             {group.createdById === user.id ? 'you' : (creator?.displayName ?? 'another member')} on{' '}
                             {formatDateTime(group.createdAt)}

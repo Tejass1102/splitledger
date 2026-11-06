@@ -5,11 +5,11 @@ import FormField from '../FormField'
 import Badge from './Badge'
 
 const primaryButton =
-    'rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60'
+    'rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60'
 const secondaryButton =
-    'rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60'
+    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
 const dangerButton =
-    'rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60'
+    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 // onRemoved(member), onLinked(member, email), onStale(message) and onRefresh() report back to the page
 export default function MemberRow({
@@ -90,7 +90,7 @@ export default function MemberRow({
         <li className="py-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-medium text-slate-900">{member.displayName}</span>
+                    <span className="text-sm font-medium text-ink">{member.displayName}</span>
                     {member.userId === currentUserId && <Badge tone="indigo">You</Badge>}
                     {isGroupCreatorMember && <Badge tone="slate">Creator</Badge>}
                     {member.guest && <Badge tone="amber">Guest</Badge>}
@@ -98,7 +98,7 @@ export default function MemberRow({
 
                 {mode === 'confirmRemove' ? (
                     <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm text-slate-600">Remove {member.displayName}?</span>
+                        <span className="text-sm text-muted">Remove {member.displayName}?</span>
                         <button onClick={handleRemove} disabled={busy} className={dangerButton}>
                             {busy ? 'Removing...' : 'Yes, remove'}
                         </button>
@@ -138,8 +138,8 @@ export default function MemberRow({
             </div>
 
             {mode === 'link' && (
-                <form onSubmit={handleLink} className="mt-3 space-y-3 rounded-xl bg-slate-50 p-4" noValidate>
-                    <p className="text-sm text-slate-600">
+                <form onSubmit={handleLink} className="mt-3 space-y-3 rounded-xl bg-subtle p-4" noValidate>
+                    <p className="text-sm text-muted">
                         {member.displayName} keeps their name, and everything they paid or owe moves to the
                         account you choose.
                     </p>
@@ -165,7 +165,7 @@ export default function MemberRow({
             )}
 
             {error && (
-                <p role="alert" className="mt-2 text-sm text-red-600">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}

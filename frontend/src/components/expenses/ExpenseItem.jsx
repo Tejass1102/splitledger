@@ -5,9 +5,9 @@ import { formatDate, formatMoney } from '../../utils/format'
 import ExpenseForm from './ExpenseForm'
 
 const secondaryButton =
-    'rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60'
+    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
 const dangerButton =
-    'rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60'
+    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 export default function ExpenseItem({ expense, categories, onSaved, onDeleted, onStale }) {
     const [mode, setMode] = useState('view') // 'view' | 'edit' | 'confirmDelete'
@@ -36,7 +36,7 @@ export default function ExpenseItem({ expense, categories, onSaved, onDeleted, o
     if (mode === 'edit') {
         return (
             <li className="py-3">
-                <div className="rounded-xl bg-slate-50 p-4">
+                <div className="rounded-xl bg-subtle p-4">
                     <ExpenseForm
                         expense={expense}
                         categories={categories}
@@ -57,16 +57,16 @@ export default function ExpenseItem({ expense, categories, onSaved, onDeleted, o
         <li className="px-1 py-3">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                    <p className="text-sm font-semibold text-slate-900">{formatMoney(expense.amount)}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">
+                    <p className="text-sm font-semibold text-ink">{formatMoney(expense.amount)}</p>
+                    <p className="mt-0.5 text-xs text-muted">
                         {formatDate(expense.expenseDate)} · {expense.categoryName ?? 'No category'}
                     </p>
-                    {expense.note && <p className="mt-1 break-words text-sm text-slate-600">{expense.note}</p>}
+                    {expense.note && <p className="mt-1 break-words text-sm text-muted">{expense.note}</p>}
                 </div>
 
                 {mode === 'confirmDelete' ? (
                     <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm text-slate-600">Delete this expense?</span>
+                        <span className="text-sm text-muted">Delete this expense?</span>
                         <button onClick={handleDelete} disabled={busy} className={dangerButton}>
                             {busy ? 'Deleting...' : 'Yes, delete'}
                         </button>
@@ -99,7 +99,7 @@ export default function ExpenseItem({ expense, categories, onSaved, onDeleted, o
             </div>
 
             {error && (
-                <p role="alert" className="mt-2 text-sm text-red-600">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}

@@ -11,9 +11,9 @@ const SPLIT_LABELS = {
 }
 
 const secondaryButton =
-    'rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60'
+    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
 const dangerButton =
-    'rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60'
+    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 export default function GroupExpenseItem({
                                              expense,
@@ -55,7 +55,7 @@ export default function GroupExpenseItem({
     if (mode === 'edit') {
         return (
             <li className="py-3">
-                <div className="rounded-xl bg-slate-50 p-4">
+                <div className="rounded-xl bg-subtle p-4">
                     <GroupExpenseForm
                         groupId={group.id}
                         expense={expense}
@@ -78,18 +78,18 @@ export default function GroupExpenseItem({
         <li className="px-1 py-3">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                    <p className="break-words text-sm font-semibold text-slate-900">{expense.description}</p>
-                    <p className="mt-0.5 text-sm font-semibold text-slate-900">
+                    <p className="break-words text-sm font-semibold text-ink">{expense.description}</p>
+                    <p className="mt-0.5 text-sm font-semibold text-ink">
                         {formatMoney(expense.amount)}
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-500">
+                    <p className="mt-0.5 text-xs text-muted">
                         {formatDate(expense.expenseDate)} · Paid by {paidByYou ? 'you' : expense.paidByName} ·{' '}
                         {SPLIT_LABELS[expense.splitType]}
                     </p>
                     <button
                         onClick={() => setShowSplit((open) => !open)}
                         aria-expanded={showSplit}
-                        className="mt-1 text-xs font-medium text-indigo-700 hover:underline"
+                        className="mt-1 text-xs font-medium text-brand hover:underline"
                     >
                         {showSplit ? 'Hide split' : 'Show split'}
                     </button>
@@ -98,7 +98,7 @@ export default function GroupExpenseItem({
                 {canModify &&
                     (mode === 'confirmDelete' ? (
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm text-slate-600">Delete this expense?</span>
+                            <span className="text-sm text-muted">Delete this expense?</span>
                             <button onClick={handleDelete} disabled={busy} className={dangerButton}>
                                 {busy ? 'Deleting...' : 'Yes, delete'}
                             </button>
@@ -131,18 +131,18 @@ export default function GroupExpenseItem({
             </div>
 
             {showSplit && (
-                <ul className="mt-2 space-y-1 rounded-lg bg-slate-50 px-3 py-2">
+                <ul className="mt-2 space-y-1 rounded-lg bg-subtle px-3 py-2">
                     {expense.splits.map((share) => (
                         <li key={share.memberId} className="flex justify-between gap-3 text-sm">
-                            <span className="text-slate-700">{share.memberName}</span>
-                            <span className="text-slate-900">{formatMoney(share.shareAmount)}</span>
+                            <span className="text-ink">{share.memberName}</span>
+                            <span className="text-ink">{formatMoney(share.shareAmount)}</span>
                         </li>
                     ))}
                 </ul>
             )}
 
             {error && (
-                <p role="alert" className="mt-2 text-sm text-red-600">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}

@@ -11,9 +11,9 @@ import {
     currentMonthKey,
     formatMoney,
     formatMonthKey,
-    shiftMonth,
 } from '../utils/format'
 import Spinner from '../components/Spinner'
+import MonthSwitcher from '../components/dashboard/MonthSwitcher'
 
 function toneOf(amount) {
     if (amount < 0) return 'negative'
@@ -27,7 +27,7 @@ function LoadError({ message, onRetry }) {
             <Alert type="error">{message}</Alert>
             <button
                 onClick={onRetry}
-                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
             >
                 Retry
             </button>
@@ -35,8 +35,16 @@ function LoadError({ message, onRetry }) {
     )
 }
 
-const navButton =
-    'rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50'
+function greetingFor(date = new Date()) {
+    const hour = date.getHours()
+    if (hour < 12) return 'Good morning'
+    if (hour < 18) return 'Good afternoon'
+    return 'Good evening'
+}
+
+function firstNameOf(name) {
+    return (name || '').trim().split(/\s+/)[0] || 'there'
+}
 
 export default function DashboardPage() {
     const { user } = useAuth()
@@ -136,36 +144,15 @@ export default function DashboardPage() {
 
     return (
         <div className="mx-auto max-w-3xl space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Welcome, {user.name}</h1>
-                    <p className="mt-1 text-sm text-slate-500">Here is how your money looks.</p>
+                    <h1 className="text-2xl font-bold text-ink">
+                        {greetingFor()}, {firstNameOf(user.name)}
+                    </h1>
+                    <p className="mt-1 text-sm text-muted">Here is how your money looks.</p>
                 </div>
 
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setMonth(shiftMonth(month, -1))}
-                        aria-label="Previous month"
-                        className={navButton}
-                    >
-                        ‹
-                    </button>
-                    <span className="min-w-32 text-center text-sm font-semibold text-slate-900">
-            {monthLabel}
-          </span>
-                    <button
-                        onClick={() => setMonth(shiftMonth(month, 1))}
-                        aria-label="Next month"
-                        className={navButton}
-                    >
-                        ›
-                    </button>
-                    {month !== currentMonthKey() && (
-                        <button onClick={() => setMonth(currentMonthKey())} className={navButton}>
-                            This month
-                        </button>
-                    )}
-                </div>
+                <MonthSwitcher month={month} onChange={setMonth} />
             </div>
 
             {monthlyError ? (
@@ -209,22 +196,22 @@ export default function DashboardPage() {
                 {balanceData && (
                     <div className="grid gap-4 sm:grid-cols-3">
                         <div>
-                            <p className="text-sm text-slate-500">Total income</p>
-                            <p className="mt-1 text-lg font-semibold text-slate-900">
+                            <p className="text-sm text-muted">Total income</p>
+                            <p className="mt-1 text-lg font-semibold text-ink">
                                 {formatMoney(balanceData.totalIncome)}
                             </p>
                         </div>
                         <div>
-                            <p className="text-sm text-slate-500">Total expenses</p>
-                            <p className="mt-1 text-lg font-semibold text-slate-900">
+                            <p className="text-sm text-muted">Total expenses</p>
+                            <p className="mt-1 text-lg font-semibold text-ink">
                                 {formatMoney(balanceData.totalExpense)}
                             </p>
                         </div>
                         <div>
-                            <p className="text-sm text-slate-500">Balance</p>
+                            <p className="text-sm text-muted">Balance</p>
                             <p
                                 className={`mt-1 text-lg font-semibold ${
-                                    balanceData.balance < 0 ? 'text-red-700' : 'text-green-700'
+                                    balanceData.balance < 0 ? 'text-negative' : 'text-positive-ink'
                                 }`}
                             >
                                 {formatMoney(balanceData.balance)}

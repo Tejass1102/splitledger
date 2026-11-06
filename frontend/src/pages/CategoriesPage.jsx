@@ -86,9 +86,9 @@ export default function CategoriesPage() {
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-slate-900">Categories</h1>
+            <h1 className="text-2xl font-bold text-ink">Categories</h1>
 
-            <div className="inline-flex rounded-lg bg-slate-100 p-1" role="tablist">
+            <div className="inline-flex rounded-lg bg-subtle p-1" role="tablist">
                 {TABS.map((tab) => (
                     <button
                         key={tab.type}
@@ -96,7 +96,7 @@ export default function CategoriesPage() {
                         aria-selected={type === tab.type}
                         onClick={() => handleTabChange(tab.type)}
                         className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                            type === tab.type ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+                            type === tab.type ? 'bg-surface text-ink shadow-sm' : 'text-muted'
                         }`}
                     >
                         {tab.label}
@@ -120,7 +120,7 @@ export default function CategoriesPage() {
                     <Alert type="error">{error}</Alert>
                     <button
                         onClick={reload}
-                        className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
                     >
                         Retry
                     </button>
@@ -131,11 +131,11 @@ export default function CategoriesPage() {
                 <>
                     <Card title="Your categories">
                         {custom.length === 0 ? (
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-muted">
                                 You haven&apos;t added any {typeLabel} categories yet.
                             </p>
                         ) : (
-                            <ul className="divide-y divide-slate-100">
+                            <ul className="divide-y divide-line">
                                 {custom.map((category) => (
                                     <CategoryRow
                                         key={category.id}
@@ -151,9 +151,9 @@ export default function CategoriesPage() {
 
                     <Card title="Default categories" description="Provided by SplitLedger. They can't be changed.">
                         {defaults.length === 0 ? (
-                            <p className="text-sm text-slate-500">No default {typeLabel} categories.</p>
+                            <p className="text-sm text-muted">No default {typeLabel} categories.</p>
                         ) : (
-                            <ul className="divide-y divide-slate-100">
+                            <ul className="divide-y divide-line">
                                 {defaults.map((category) => (
                                     <CategoryRow
                                         key={category.id}

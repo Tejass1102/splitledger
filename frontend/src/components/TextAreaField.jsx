@@ -3,11 +3,11 @@ export default function TextAreaField({ label, name, error, counter, max, ...tex
     return (
         <div>
             <div className="mb-1 flex items-center justify-between">
-                <label htmlFor={name} className="text-sm font-medium text-slate-700">
+                <label htmlFor={name} className="text-sm font-medium text-ink">
                     {label}
                 </label>
                 {max !== undefined && (
-                    <span className={`text-xs ${counter > max ? 'text-red-600' : 'text-slate-400'}`}>
+                    <span className={`text-xs ${counter > max ? 'text-negative' : 'text-faint'}`}>
             {counter}/{max}
           </span>
                 )}
@@ -16,12 +16,12 @@ export default function TextAreaField({ label, name, error, counter, max, ...tex
                 id={name}
                 name={name}
                 rows={2}
-                className={`w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500 ${
-                    error ? 'border-red-400' : 'border-slate-300'
+                className={`w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand ${
+                    error ? 'border-negative' : 'border-line-strong'
                 }`}
                 {...textareaProps}
             />
-            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+            {error && <p className="mt-1 text-sm text-negative">{error}</p>}
         </div>
     )
 }

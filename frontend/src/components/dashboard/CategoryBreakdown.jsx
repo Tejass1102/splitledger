@@ -36,7 +36,7 @@ export default function CategoryBreakdown({
 
     return (
         <Card title="By category" description={monthLabel}>
-            <div className="mb-5 inline-flex rounded-lg bg-slate-100 p-1" role="tablist">
+            <div className="mb-5 inline-flex rounded-lg bg-subtle p-1" role="tablist">
                 {TABS.map((tab) => (
                     <button
                         key={tab.type}
@@ -44,7 +44,7 @@ export default function CategoryBreakdown({
                         aria-selected={type === tab.type}
                         onClick={() => onTypeChange(tab.type)}
                         className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                            type === tab.type ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600'
+                            type === tab.type ? 'bg-surface text-ink shadow-sm' : 'text-muted'
                         }`}
                     >
                         {tab.label}
@@ -59,7 +59,7 @@ export default function CategoryBreakdown({
                     <Alert type="error">{error}</Alert>
                     <button
                         onClick={onRetry}
-                        className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
                     >
                         Retry
                     </button>
@@ -67,7 +67,7 @@ export default function CategoryBreakdown({
             )}
 
             {!loading && !error && data && items.length === 0 && (
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-muted">
                     No {typeLabel} recorded in {monthLabel}.
                 </p>
             )}
@@ -100,11 +100,11 @@ export default function CategoryBreakdown({
                     </div>
 
                     <div className="w-full min-w-0 flex-1">
-                        <p className="mb-2 text-sm text-slate-600">
+                        <p className="mb-2 text-sm text-muted">
                             Total{' '}
-                            <span className="font-semibold text-slate-900">{formatMoney(data.total)}</span>
+                            <span className="font-semibold text-ink">{formatMoney(data.total)}</span>
                         </p>
-                        <ul className="divide-y divide-slate-100">
+                        <ul className="divide-y divide-line">
                             {items.map((item, index) => (
                                 <li
                                     key={item.categoryId ?? 'none'}
@@ -116,11 +116,11 @@ export default function CategoryBreakdown({
                         style={{ backgroundColor: COLORS[index % COLORS.length] }}
                         aria-hidden="true"
                     />
-                    <span className="truncate text-sm text-slate-900">{item.categoryName}</span>
+                    <span className="truncate text-sm text-ink">{item.categoryName}</span>
                   </span>
-                                    <span className="shrink-0 text-sm text-slate-600">
+                                    <span className="shrink-0 text-sm text-muted">
                     {formatMoney(item.amount)}
-                                        <span className="ml-2 text-xs text-slate-400">
+                                        <span className="ml-2 text-xs text-faint">
                       {Number(item.percentage).toFixed(1)}%
                     </span>
                   </span>

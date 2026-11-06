@@ -10,11 +10,11 @@ function messageFor(err) {
 }
 
 const primaryButton =
-    'rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60'
+    'rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60'
 const secondaryButton =
-    'rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60'
+    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
 const dangerButton =
-    'rounded-lg bg-red-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60'
+    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 // isCreator decides whether Edit and Delete are shown (the backend enforces it as well).
 // onRenamed(id, newName), onDeleted(id), onStale(message) report back to the page.
@@ -75,7 +75,7 @@ export default function GroupItem({ group, isCreator, onRenamed, onDeleted, onSt
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         autoFocus
-                        className="min-w-0 flex-1 basis-48 rounded-lg border border-slate-300 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="min-w-0 flex-1 basis-48 rounded-lg border border-line-strong px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand"
                     />
                     <button
                         type="submit"
@@ -94,17 +94,17 @@ export default function GroupItem({ group, isCreator, onRenamed, onDeleted, onSt
                         <p className="flex flex-wrap items-center gap-2">
                             <Link
                                 to={`/groups/${group.id}`}
-                                className="truncate text-sm font-semibold text-indigo-700 hover:underline"
+                                className="truncate text-sm font-semibold text-brand hover:underline"
                             >
                                 {group.name}
                             </Link>
                             {isCreator && (
-                                <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
+                                <span className="rounded-full bg-brand-soft px-2.5 py-0.5 text-xs font-medium text-brand">
                   Creator
                 </span>
                             )}
                         </p>
-                        <p className="mt-0.5 text-xs text-slate-500">
+                        <p className="mt-0.5 text-xs text-muted">
                             {group.memberCount} {group.memberCount === 1 ? 'member' : 'members'}
                         </p>
                     </div>
@@ -112,7 +112,7 @@ export default function GroupItem({ group, isCreator, onRenamed, onDeleted, onSt
                     {isCreator &&
                         (mode === 'confirmDelete' ? (
                             <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-sm text-slate-600">Delete this group?</span>
+                                <span className="text-sm text-muted">Delete this group?</span>
                                 <button onClick={handleDelete} disabled={busy} className={dangerButton}>
                                     {busy ? 'Deleting...' : 'Yes, delete'}
                                 </button>
@@ -146,7 +146,7 @@ export default function GroupItem({ group, isCreator, onRenamed, onDeleted, onSt
             )}
 
             {error && (
-                <p role="alert" className="mt-2 text-sm text-red-600">
+                <p role="alert" className="mt-2 text-sm text-negative">
                     {error}
                 </p>
             )}

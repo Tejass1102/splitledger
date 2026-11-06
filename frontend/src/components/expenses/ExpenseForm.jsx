@@ -133,7 +133,7 @@ export default function ExpenseForm({ expense, categories, idPrefix, onSaved, on
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
+                    className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
                 >
                     {submitting ? 'Saving...' : editing ? 'Save changes' : 'Add expense'}
                 </button>
@@ -142,7 +142,7 @@ export default function ExpenseForm({ expense, categories, idPrefix, onSaved, on
                         type="button"
                         onClick={onCancel}
                         disabled={submitting}
-                        className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle disabled:opacity-60"
                     >
                         Cancel
                     </button>

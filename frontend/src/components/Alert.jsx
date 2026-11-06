@@ -1,6 +1,6 @@
 const STYLES = {
-    error: 'bg-red-50 text-red-700',
-    success: 'bg-green-50 text-green-700',
+    error: 'bg-negative-soft text-negative',
+    success: 'bg-positive-soft text-positive-ink',
 }
 
 // Renders nothing when there is no message

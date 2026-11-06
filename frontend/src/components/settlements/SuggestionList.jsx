@@ -6,11 +6,11 @@ export default function SuggestionList({ settleUp, members, currentUserId, onUse
     const userIdOf = (memberId) => members.find((m) => m.id === memberId)?.userId
 
     if (settleUp.payments.length === 0) {
-        return <p className="text-sm text-slate-500">No payments are needed right now.</p>
+        return <p className="text-sm text-muted">No payments are needed right now.</p>
     }
 
     return (
-        <ul className="divide-y divide-slate-100">
+        <ul className="divide-y divide-line">
             {settleUp.payments.map((payment, index) => {
                 const fromYou = userIdOf(payment.fromMemberId) === currentUserId
                 const toYou = userIdOf(payment.toMemberId) === currentUserId
@@ -25,13 +25,13 @@ export default function SuggestionList({ settleUp, members, currentUserId, onUse
                         key={`${payment.fromMemberId}-${payment.toMemberId}-${index}`}
                         className="flex flex-wrap items-center justify-between gap-3 py-3"
                     >
-                        <p className="text-sm text-slate-900">
+                        <p className="text-sm text-ink">
                             {sentence}{' '}
                             <span className="font-semibold">{formatMoney(payment.amount)}</span>
                         </p>
                         <button
                             onClick={() => onUse(payment)}
-                            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
                         >
                             Record this payment
                         </button>

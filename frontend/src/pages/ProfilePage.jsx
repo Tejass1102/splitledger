@@ -51,7 +51,7 @@ export default function ProfilePage() {
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-slate-900">Profile</h1>
+            <h1 className="text-2xl font-bold text-ink">Profile</h1>
 
             {loading && <Spinner label="Loading your profile..." />}
 
@@ -60,7 +60,7 @@ export default function ProfilePage() {
                     <Alert type="error">{error}</Alert>
                     <button
                         onClick={retry}
-                        className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
                     >
                         Retry
                     </button>
