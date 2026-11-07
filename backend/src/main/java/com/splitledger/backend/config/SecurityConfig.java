@@ -31,7 +31,7 @@ import java.util.List;
 public class SecurityConfig {
     // Open without a token: login/register, the error page and the API docs
     private static final String[] PUBLIC_PATHS = {
-            "/api/auth/**", "/error",
+            "/api/auth/**", "/api/health", "/error",
             "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
     };
 

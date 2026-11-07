@@ -1,0 +1,22 @@
+# Active when SPRING_PROFILES_ACTIVE=prod (set in the Dockerfile)
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 5        # small: low memory, and free Neon limits connections
+      minimum-idle: 0             # Neon sleeps when idle; do not hold dead connections
+      idle-timeout: 120000
+      max-lifetime: 240000
+      connection-timeout: 30000   # allows time for Neon to wake up
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  flyway:
+    baseline-on-migrate: false    # production must start from an empty database or a Flyway-managed one
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
