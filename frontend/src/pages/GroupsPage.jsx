@@ -82,7 +82,8 @@ export default function GroupsPage() {
     }
 
     return (
-        <div className="mx-auto max-w-3xl space-y-6">
+        <div className="mx-auto max-w-content space-y-6">
+
             <PageHeader title="Groups" description="Share costs with friends, flatmates or a trip." />
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}

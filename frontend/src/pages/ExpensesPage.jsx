@@ -134,7 +134,7 @@ export default function ExpensesPage() {
     const totalPaise = expenses.reduce((sum, e) => sum + Math.round(e.amount * 100), 0)
 
     return (
-        <div className="mx-auto max-w-3xl space-y-6">
+        <div className="mx-auto max-w-content space-y-6">
             <PageHeader title="Expenses" description="Record and review what you spend." />
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}

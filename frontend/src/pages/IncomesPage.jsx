@@ -140,7 +140,8 @@ export default function IncomesPage() {
     const totalPaise = incomes.reduce((sum, i) => sum + Math.round(i.amount * 100), 0)
 
     return (
-        <div className="mx-auto max-w-3xl space-y-6">
+        <div className="mx-auto max-w-content space-y-6">
+
             <PageHeader title="Incomes" description="Money you receive, from salary and elsewhere." />
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}

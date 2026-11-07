@@ -90,7 +90,7 @@ export default function CategoriesPage() {
     const typeLabel = type === 'EXPENSE' ? 'expense' : 'income'
 
     return (
-        <div className="mx-auto max-w-3xl space-y-6">
+        <div className="mx-auto max-w-content space-y-6">
             <PageHeader title="Categories" description="Organise your expenses and income." />
 
             <SegmentedControl

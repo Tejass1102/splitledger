@@ -107,6 +107,10 @@
 @theme {
     --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
+
+    /* Layout widths: change these two numbers to retune the whole app */
+    --container-shell: 88rem;   /* header + dashboard width */
+    --container-content: 72rem; /* list pages: expenses, incomes, groups, categories */
 }
 
 /* ---------- Base ---------- */
@@ -116,6 +120,17 @@
     }
     html.dark {
         color-scheme: dark;
+    }
+    /* Scale the whole UI up on large screens (Tailwind sizes are rem-based) */
+    @media (min-width: 1280px) {
+        html {
+            font-size: 106.25%;
+        }
+    }
+    @media (min-width: 1480px) {
+        html {
+            font-size: 112.5%;
+        }
     }
     body {
         @apply bg-page text-ink font-sans antialiased tabular-nums;

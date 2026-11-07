@@ -77,7 +77,7 @@ export default function AppLayout() {
                 </a>
 
                 <header className="sticky top-0 z-30 border-b border-line bg-surface/90 backdrop-blur">
-                    <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+                    <div className="mx-auto flex max-w-shell items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
                         <div className="flex items-center gap-6">
                             <Link
                                 to="/"
@@ -128,7 +128,7 @@ export default function AppLayout() {
                             aria-label="Main"
                             className="border-t border-line px-4 py-3 lg:hidden"
                         >
-                            <div className="mx-auto max-w-5xl space-y-1">
+                            <div className="mx-auto max-w-shell space-y-1">
                                 {NAV_ITEMS.map((item) => (
                                     <NavLink
                                         key={item.to}
@@ -161,7 +161,7 @@ export default function AppLayout() {
                     )}
                 </header>
 
-                <main id="main-content" tabIndex={-1} className="mx-auto max-w-5xl px-4 py-8 outline-none">
+                <main id="main-content" tabIndex={-1} className="mx-auto max-w-shell px-4 py-8 outline-none sm:px-6 lg:px-8">
                     <SalaryBanner />
                     {/* key resets the boundary when you move to another page */}
                     <ErrorBoundary key={location.pathname} compact>

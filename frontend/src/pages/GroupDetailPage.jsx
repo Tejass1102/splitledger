@@ -104,7 +104,8 @@ export default function GroupDetailPage() {
     const creator = group?.members.find((m) => m.userId === group.createdById)
 
     return (
-        <div className="mx-auto max-w-3xl space-y-6">
+        <div className="mx-auto max-w-content space-y-6">
+
             <Link
                 to="/groups"
                 className="inline-flex items-center gap-1.5 rounded text-sm font-medium text-brand hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
