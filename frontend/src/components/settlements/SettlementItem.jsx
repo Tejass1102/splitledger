@@ -2,11 +2,8 @@ import { useState } from 'react'
 import { describeError } from '../../api/client'
 import { settlementsApi } from '../../api/settlements'
 import { formatDate, formatMoney } from '../../utils/format'
-
-const secondaryButton =
-    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
-const dangerButton =
-    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
+import Button, { IconButton } from '../Button'
+import { ArrowRightIcon, TrashIcon } from '../icons'
 
 // onDeleted() and onStale(message) report back to the section
 export default function SettlementItem({ settlement, group, currentUserId, onDeleted, onStale }) {
@@ -39,40 +36,53 @@ export default function SettlementItem({ settlement, group, currentUserId, onDel
         }
     }
 
+    const sentence = `${fromYou ? 'You' : settlement.fromName} paid ${toYou ? 'you' : settlement.toName}`
+
     return (
         <li className="px-1 py-3">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                    <p className="text-sm text-ink">
-                        {fromYou ? 'You' : settlement.fromName} paid {toYou ? 'you' : settlement.toName}{' '}
-                        <span className="font-semibold">{formatMoney(settlement.amount)}</span>
-                    </p>
+            <div className="flex items-start gap-3">
+                <span
+                    aria-hidden="true"
+                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-positive-soft text-positive"
+                >
+                    <ArrowRightIcon size={18} />
+                </span>
+
+                <div className="min-w-0 flex-1">
+                    <p className="break-words text-sm font-medium text-ink">{sentence}</p>
                     <p className="mt-0.5 text-xs text-muted">{formatDate(settlement.settledOn)}</p>
                 </div>
 
-                {canDelete &&
-                    (confirming ? (
-                        <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm text-muted">Delete this settlement?</span>
-                            <button onClick={handleDelete} disabled={busy} className={dangerButton}>
-                                {busy ? 'Deleting...' : 'Yes, delete'}
-                            </button>
-                            <button onClick={() => setConfirming(false)} disabled={busy} className={secondaryButton}>
-                                Cancel
-                            </button>
-                        </div>
-                    ) : (
-                        <button
+                <div className="flex shrink-0 flex-col items-end gap-1">
+                    <p className="text-sm font-semibold text-ink">{formatMoney(settlement.amount)}</p>
+                    {canDelete && !confirming && (
+                        <IconButton
+                            tone="danger"
+                            label={`Delete settlement: ${sentence}, ${formatMoney(settlement.amount)}`}
                             onClick={() => {
                                 setError('')
                                 setConfirming(true)
                             }}
-                            className={secondaryButton}
                         >
-                            Delete
-                        </button>
-                    ))}
+                            <TrashIcon size={16} />
+                        </IconButton>
+                    )}
+                </div>
             </div>
+
+            {canDelete && confirming && (
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-negative-soft px-3 py-2">
+                    <span className="text-sm font-medium text-ink">Delete this settlement?</span>
+                    <div className="flex gap-2">
+                        <Button variant="danger" size="sm" onClick={handleDelete} disabled={busy}>
+                            {busy ? 'Deleting...' : 'Yes, delete'}
+                        </Button>
+                        <Button variant="secondary" size="sm" onClick={() => setConfirming(false)} disabled={busy}>
+                            Cancel
+                        </Button>
+                    </div>
+                </div>
+            )}
 
             {error && (
                 <p role="alert" className="mt-2 text-sm text-negative">

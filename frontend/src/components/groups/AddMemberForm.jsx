@@ -2,13 +2,15 @@ import { useState } from 'react'
 import { describeError } from '../../api/client'
 import { groupsApi } from '../../api/groups'
 import Alert from '../Alert'
+import Button from '../Button'
 import FormField from '../FormField'
+import SegmentedControl from '../SegmentedControl'
 
 const NAME_MAX = 100
 
 const MODES = [
-    { key: 'email', label: 'Registered user' },
-    { key: 'name', label: 'Guest' },
+    { value: 'email', label: 'Registered user' },
+    { value: 'name', label: 'Guest' },
 ]
 
 // onAdded(member) hands the new member to the page; onRefresh() reloads the group quietly
@@ -62,22 +64,7 @@ export default function AddMemberForm({ groupId, onAdded, onRefresh }) {
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <h3 className="text-sm font-semibold text-ink">Add a member</h3>
 
-            <div className="inline-flex rounded-lg bg-subtle p-1" role="tablist">
-                {MODES.map((m) => (
-                    <button
-                        key={m.key}
-                        type="button"
-                        role="tab"
-                        aria-selected={mode === m.key}
-                        onClick={() => switchMode(m.key)}
-                        className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                            mode === m.key ? 'bg-surface text-ink shadow-sm' : 'text-muted'
-                        }`}
-                    >
-                        {m.label}
-                    </button>
-                ))}
-            </div>
+            <SegmentedControl label="Member type" options={MODES} value={mode} onChange={switchMode} />
 
             <p className="text-sm text-muted">
                 {mode === 'email'
@@ -102,20 +89,16 @@ export default function AddMemberForm({ groupId, onAdded, onRefresh }) {
                     {mode === 'name' && (
                         <p
                             className={`mt-1 text-right text-xs ${
-                                value.length > NAME_MAX ? 'text-negative' : 'text-faint'
+                                value.length > NAME_MAX ? 'text-negative' : 'text-muted'
                             }`}
                         >
                             {value.length}/{NAME_MAX}
                         </p>
                     )}
                 </div>
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="mt-6 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-                >
+                <Button type="submit" disabled={submitting} className="mt-6">
                     {submitting ? 'Adding...' : 'Add member'}
-                </button>
+                </Button>
             </div>
         </form>
     )

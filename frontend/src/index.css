@@ -11,7 +11,7 @@
     --c-elevated: #ffffff;
 
     --c-ink: #111827;
-    --c-muted: #64748b;
+    --c-muted: #5b6b82;
     --c-faint: #94a3b8; /* placeholders, disabled, decorative only */
 
     --c-line: #e2e8f0;
@@ -28,6 +28,7 @@
 
     --c-negative: #dc2626;
     --c-negative-hover: #b91c1c;
+    --c-negative-ink: #b91c1c;
     --c-negative-soft: #fef2f2;
     --c-on-negative: #ffffff;
 
@@ -60,6 +61,7 @@
 
     --c-negative: #f87171;
     --c-negative-hover: #fca5a5;
+    --c-negative-ink: #f87171;
     --c-negative-soft: rgb(248 113 113 / 0.12);
     --c-on-negative: #0b1120;
 
@@ -93,6 +95,7 @@
 
     --color-negative: var(--c-negative);
     --color-negative-hover: var(--c-negative-hover);
+    --color-negative-ink: var(--c-negative-ink);
     --color-negative-soft: var(--c-negative-soft);
     --color-on-negative: var(--c-on-negative);
 
@@ -116,5 +119,15 @@
     }
     body {
         @apply bg-page text-ink font-sans antialiased tabular-nums;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

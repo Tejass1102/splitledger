@@ -3,6 +3,7 @@ import { describeError } from '../../api/client'
 import { expensesApi } from '../../api/expenses'
 import { todayIso } from '../../utils/format'
 import Alert from '../Alert'
+import Button from '../Button'
 import FormField from '../FormField'
 import SelectField from '../SelectField'
 import TextAreaField from '../TextAreaField'
@@ -27,10 +28,7 @@ export default function ExpenseForm({ expense, categories, idPrefix, onSaved, on
     const categoryValue = categories.some((c) => String(c.id) === form.categoryId)
         ? form.categoryId
         : ''
-
-    function handleChange(e) {
-        setForm({ ...form, [e.target.name]: e.target.value })
-    }
+    
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -123,29 +121,20 @@ export default function ExpenseForm({ expense, categories, idPrefix, onSaved, on
                 label="Note (optional)"
                 name={`${idPrefix}note`}
                 value={form.note}
-                onChange={handleChange}
+                onChange={(e) => setForm({ ...form, note: e.target.value })}
                 counter={form.note.length}
                 max={NOTE_MAX}
                 error={fieldErrors.note}
             />
 
             <div className="flex gap-2">
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-                >
+                <Button type="submit" disabled={submitting}>
                     {submitting ? 'Saving...' : editing ? 'Save changes' : 'Add expense'}
-                </button>
+                </Button>
                 {onCancel && (
-                    <button
-                        type="button"
-                        onClick={onCancel}
-                        disabled={submitting}
-                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle disabled:opacity-60"
-                    >
+                    <Button variant="secondary" onClick={onCancel} disabled={submitting}>
                         Cancel
-                    </button>
+                    </Button>
                 )}
             </div>
         </form>

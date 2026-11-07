@@ -3,6 +3,7 @@ import { describeError } from '../../api/client'
 import { settlementsApi } from '../../api/settlements'
 import { todayIso } from '../../utils/format'
 import Alert from '../Alert'
+import Button from '../Button'
 import FormField from '../FormField'
 import SelectField from '../SelectField'
 
@@ -128,13 +129,9 @@ export default function SettlementForm({ groupId, members, initial, onSaved, onS
                 />
             </div>
 
-            <button
-                type="submit"
-                disabled={submitting}
-                className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-            >
+            <Button type="submit" disabled={submitting}>
                 {submitting ? 'Recording...' : 'Record settlement'}
-            </button>
+            </Button>
         </form>
     )
 }

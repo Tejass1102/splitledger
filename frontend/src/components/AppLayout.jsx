@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { RemindersProvider } from '../context/RemindersContext'
 import AccountMenu from './AccountMenu'
 import Avatar from './Avatar'
+import Button from './Button'
 import ErrorBoundary from './ErrorBoundary'
 import {
     CategoriesIcon,
@@ -150,13 +151,10 @@ export default function AppLayout() {
                                         <Avatar name={user.name} size="sm" />
                                         <span className="truncate text-sm text-ink">{user.name}</span>
                                     </div>
-                                    <button
-                                        onClick={logout}
-                                        className={`flex items-center gap-2 rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle ${focusRing}`}
-                                    >
+                                    <Button variant="secondary" size="sm" onClick={logout}>
                                         <LogoutIcon size={16} />
                                         Log out
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </nav>

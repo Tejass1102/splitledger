@@ -1,4 +1,7 @@
+import { inputClass } from './fieldStyles'
+
 export default function FormField({ label, name, error, ...inputProps }) {
+    const errorId = `${name}-error`
     return (
         <div>
             <label htmlFor={name} className="mb-1 block text-sm font-medium text-ink">
@@ -7,12 +10,16 @@ export default function FormField({ label, name, error, ...inputProps }) {
             <input
                 id={name}
                 name={name}
-                className={`w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand ${
-                    error ? 'border-negative' : 'border-line-strong'
-                }`}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? errorId : undefined}
+                className={inputClass({ error: Boolean(error) })}
                 {...inputProps}
             />
-            {error && <p className="mt-1 text-sm text-negative">{error}</p>}
+            {error && (
+                <p id={errorId} className="mt-1 text-sm text-negative">
+                    {error}
+                </p>
+            )}
         </div>
     )
 }

@@ -4,6 +4,10 @@ import { groupExpensesApi } from '../../api/groupExpenses'
 import { currentMonthRange, formatMoney } from '../../utils/format'
 import Alert from '../Alert'
 import Card from '../Card'
+import Button from '../Button'
+import EmptyState from '../EmptyState'
+import { ReceiptIcon } from '../icons'
+import LoadError from '../LoadError'
 import FormField from '../FormField'
 import SelectField from '../SelectField'
 import GroupExpenseForm from './GroupExpenseForm'
@@ -165,18 +169,12 @@ export default function GroupExpensesSection({ group, currentUserId, onChanged }
                     <Alert type="error">{rangeError}</Alert>
 
                     <div className="flex gap-2">
-                        <button
-                            onClick={showThisMonth}
-                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
-                        >
+                        <Button variant="secondary" size="sm" onClick={showThisMonth}>
                             This month
-                        </button>
-                        <button
-                            onClick={showAllTime}
-                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
-                        >
+                        </Button>
+                        <Button variant="secondary" size="sm" onClick={showAllTime}>
                             All time
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Card>
@@ -185,28 +183,36 @@ export default function GroupExpensesSection({ group, currentUserId, onChanged }
                 <Card title="Expenses">
                     {loading && <Spinner label="Loading expenses..." />}
 
-                    {!loading && result.error && (
-                        <div className="space-y-3">
-                            <Alert type="error">{result.error}</Alert>
-                            <button
-                                onClick={refresh}
-                                className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-                            >
-                                Retry
-                            </button>
-                        </div>
-                    )}
+                    {!loading && result.error && <LoadError message={result.error} onRetry={refresh} />}
 
                     {!loading && !result.error && expenses.length === 0 && (
-                        <p className="text-sm text-muted">No expenses match these filters.</p>
+                        <EmptyState
+                            icon={ReceiptIcon}
+                            title="No expenses found"
+                            description="Nothing matches these filters. Try a different date range or payer, or add an expense above."
+                            action={
+                                filters.from || filters.to ? (
+                                    <Button variant="secondary" size="sm" onClick={showAllTime}>
+                                        Show all time
+                                    </Button>
+                                ) : null
+                            }
+                        />
                     )}
 
                     {!loading && !result.error && expenses.length > 0 && (
                         <>
-                            <p className="mb-2 text-sm text-muted">
-                                {expenses.length} {expenses.length === 1 ? 'expense' : 'expenses'} · Total{' '}
-                                <span className="font-semibold text-ink">{formatMoney(totalPaise / 100)}</span>
-                            </p>
+                            <div className="mb-2 flex items-baseline justify-between gap-3 rounded-lg bg-subtle px-4 py-3">
+                                <p className="text-sm text-muted">
+                                    {expenses.length} {expenses.length === 1 ? 'expense' : 'expenses'}
+                                </p>
+                                <p className="text-sm text-muted">
+                                    Total{' '}
+                                    <span className="text-lg font-bold text-ink">
+                                        {formatMoney(totalPaise / 100)}
+                                    </span>
+                                </p>
+                            </div>
                             <ul className="divide-y divide-line">
                                 {expenses.map((expense) => (
                                     <GroupExpenseItem

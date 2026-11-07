@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { describeError } from '../../api/client'
 import { groupsApi } from '../../api/groups'
 import Alert from '../Alert'
+import Button from '../Button'
 import FormField from '../FormField'
 
 const NAME_MAX = 100
@@ -55,19 +56,15 @@ export default function GroupForm({ onCreated }) {
                     />
                     <p
                         className={`mt-1 text-right text-xs ${
-                            name.length > NAME_MAX ? 'text-negative' : 'text-faint'
+                            name.length > NAME_MAX ? 'text-negative' : 'text-muted'
                         }`}
                     >
                         {name.length}/{NAME_MAX}
                     </p>
                 </div>
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="mt-6 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-                >
+                <Button type="submit" disabled={submitting} className="mt-6">
                     {submitting ? 'Creating...' : 'Create group'}
-                </button>
+                </Button>
             </div>
         </form>
     )

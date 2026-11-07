@@ -3,6 +3,7 @@ import { describeError } from '../../api/client'
 import { incomesApi } from '../../api/incomes'
 import { todayIso } from '../../utils/format'
 import Alert from '../Alert'
+import Button from '../Button'
 import FormField from '../FormField'
 import SelectField from '../SelectField'
 import TextAreaField from '../TextAreaField'
@@ -127,22 +128,13 @@ export default function IncomeForm({ income, categories, idPrefix, onSaved, onCa
             />
 
             <div className="flex gap-2">
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-                >
+                <Button type="submit" disabled={submitting}>
                     {submitting ? 'Saving...' : editing ? 'Save changes' : 'Add income'}
-                </button>
+                </Button>
                 {onCancel && (
-                    <button
-                        type="button"
-                        onClick={onCancel}
-                        disabled={submitting}
-                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle disabled:opacity-60"
-                    >
+                    <Button variant="secondary" onClick={onCancel} disabled={submitting}>
                         Cancel
-                    </button>
+                    </Button>
                 )}
             </div>
         </form>

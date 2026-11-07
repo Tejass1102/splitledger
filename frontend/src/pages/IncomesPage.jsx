@@ -3,13 +3,18 @@ import { categoriesApi } from '../api/categories'
 import { describeError } from '../api/client'
 import { incomesApi } from '../api/incomes'
 import Alert from '../components/Alert'
+import Button from '../components/Button'
 import Card from '../components/Card'
+import EmptyState from '../components/EmptyState'
 import FormField from '../components/FormField'
+import { WalletIcon } from '../components/icons'
 import IncomeForm from '../components/incomes/IncomeForm'
 import IncomeItem from '../components/incomes/IncomeItem'
+import LoadError from '../components/LoadError'
+import PageHeader from '../components/PageHeader'
 import SelectField from '../components/SelectField'
-import { currentMonthRange, formatMoney } from '../utils/format'
 import Spinner from '../components/Spinner'
+import { currentMonthRange, formatMoney } from '../utils/format'
 
 function byName(a, b) {
     return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
@@ -135,8 +140,8 @@ export default function IncomesPage() {
     const totalPaise = incomes.reduce((sum, i) => sum + Math.round(i.amount * 100), 0)
 
     return (
-        <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-ink">Incomes</h1>
+        <div className="mx-auto max-w-3xl space-y-6">
+            <PageHeader title="Incomes" description="Money you receive, from salary and elsewhere." />
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}
 
@@ -197,18 +202,12 @@ export default function IncomesPage() {
                     <Alert type="error">{rangeError}</Alert>
 
                     <div className="flex gap-2">
-                        <button
-                            onClick={showThisMonth}
-                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
-                        >
+                        <Button variant="secondary" size="sm" onClick={showThisMonth}>
                             This month
-                        </button>
-                        <button
-                            onClick={showAllTime}
-                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
-                        >
+                        </Button>
+                        <Button variant="secondary" size="sm" onClick={showAllTime}>
                             All time
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Card>
@@ -217,30 +216,36 @@ export default function IncomesPage() {
                 <Card title="Your incomes">
                     {loading && <Spinner label="Loading incomes..." />}
 
-                    {!loading && result.error && (
-                        <div className="space-y-3">
-                            <Alert type="error">{result.error}</Alert>
-                            <button
-                                onClick={refresh}
-                                className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-                            >
-                                Retry
-                            </button>
-                        </div>
-                    )}
+                    {!loading && result.error && <LoadError message={result.error} onRetry={refresh} />}
 
                     {!loading && !result.error && incomes.length === 0 && (
-                        <p className="text-sm text-muted">No incomes match these filters.</p>
+                        <EmptyState
+                            icon={WalletIcon}
+                            title="No incomes found"
+                            description="Nothing matches these filters. Try a different date range, category or source, or add an income above."
+                            action={
+                                filters.from || filters.to ? (
+                                    <Button variant="secondary" size="sm" onClick={showAllTime}>
+                                        Show all time
+                                    </Button>
+                                ) : null
+                            }
+                        />
                     )}
 
                     {!loading && !result.error && incomes.length > 0 && (
                         <>
-                            <p className="mb-2 text-sm text-muted">
-                                {incomes.length} {incomes.length === 1 ? 'income' : 'incomes'} · Total{' '}
-                                <span className="font-semibold text-ink">
-                  {formatMoney(totalPaise / 100)}
-                </span>
-                            </p>
+                            <div className="mb-2 flex items-baseline justify-between gap-3 rounded-lg bg-subtle px-4 py-3">
+                                <p className="text-sm text-muted">
+                                    {incomes.length} {incomes.length === 1 ? 'income' : 'incomes'}
+                                </p>
+                                <p className="text-sm text-muted">
+                                    Total{' '}
+                                    <span className="text-lg font-bold text-ink">
+                                        {formatMoney(totalPaise / 100)}
+                                    </span>
+                                </p>
+                            </div>
                             <ul className="divide-y divide-line">
                                 {incomes.map((income) => (
                                     <IncomeItem

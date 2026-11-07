@@ -1,19 +1,15 @@
 import { useState } from 'react'
 import { categoriesApi } from '../../api/categories'
 import { describeError } from '../../api/client'
+import Button, { IconButton } from '../Button'
+import { inputClass } from '../fieldStyles'
+import { PencilIcon, TrashIcon } from '../icons'
 
 // Prefer the field message (400 validation); fall back to the general message (409 etc.)
 function messageFor(err) {
     const described = describeError(err)
     return described.fieldErrors.name || described.message
 }
-
-const primaryButton =
-    'rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60'
-const secondaryButton =
-    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
-const dangerButton =
-    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 // onStale(message) is called when the backend says the category no longer exists (404)
 export default function CategoryRow({ category, onUpdated, onDeleted, onStale }) {
@@ -73,60 +69,69 @@ export default function CategoryRow({ category, onUpdated, onDeleted, onStale })
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         autoFocus
-                        className="min-w-0 flex-1 basis-48 rounded-lg border border-line-strong px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand"
+                        className={`min-w-0 flex-1 basis-48 ${inputClass({ compact: true })}`}
                     />
-                    <button
+                    <Button
                         type="submit"
+                        size="sm"
                         disabled={busy || name.trim() === category.name}
-                        className={primaryButton}
                     >
                         {busy ? 'Saving...' : 'Save'}
-                    </button>
-                    <button type="button" onClick={backToView} disabled={busy} className={secondaryButton}>
+                    </Button>
+                    <Button variant="secondary" size="sm" onClick={backToView} disabled={busy}>
                         Cancel
-                    </button>
+                    </Button>
                 </form>
             ) : (
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-sm font-medium text-ink">{category.name}</span>
+                <>
+                    <div className="flex items-center justify-between gap-2">
+                        <span className="min-w-0 truncate text-sm font-medium text-ink">{category.name}</span>
 
-                    {category.builtIn ? (
-                        <span className="rounded-full bg-subtle px-2.5 py-0.5 text-xs font-medium text-muted">
-              Default
-            </span>
-                    ) : mode === 'confirmDelete' ? (
-                        <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm text-muted">Delete this category?</span>
-                            <button onClick={handleDelete} disabled={busy} className={dangerButton}>
-                                {busy ? 'Deleting...' : 'Yes, delete'}
-                            </button>
-                            <button onClick={backToView} disabled={busy} className={secondaryButton}>
-                                Cancel
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => {
-                                    setError('')
-                                    setMode('edit')
-                                }}
-                                className={secondaryButton}
-                            >
-                                Edit
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setError('')
-                                    setMode('confirmDelete')
-                                }}
-                                className={secondaryButton}
-                            >
-                                Delete
-                            </button>
+                        {category.builtIn ? (
+                            <span className="shrink-0 rounded-full bg-subtle px-2.5 py-0.5 text-xs font-medium text-muted">
+                                Default
+                            </span>
+                        ) : (
+                            mode === 'view' && (
+                                <div className="flex shrink-0 gap-0.5">
+                                    <IconButton
+                                        label={`Rename ${category.name}`}
+                                        onClick={() => {
+                                            setError('')
+                                            setMode('edit')
+                                        }}
+                                    >
+                                        <PencilIcon size={16} />
+                                    </IconButton>
+                                    <IconButton
+                                        tone="danger"
+                                        label={`Delete ${category.name}`}
+                                        onClick={() => {
+                                            setError('')
+                                            setMode('confirmDelete')
+                                        }}
+                                    >
+                                        <TrashIcon size={16} />
+                                    </IconButton>
+                                </div>
+                            )
+                        )}
+                    </div>
+
+                    {mode === 'confirmDelete' && (
+                        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-negative-soft px-3 py-2">
+                            <span className="text-sm font-medium text-ink">Delete this category?</span>
+                            <div className="flex gap-2">
+                                <Button variant="danger" size="sm" onClick={handleDelete} disabled={busy}>
+                                    {busy ? 'Deleting...' : 'Yes, delete'}
+                                </Button>
+                                <Button variant="secondary" size="sm" onClick={backToView} disabled={busy}>
+                                    Cancel
+                                </Button>
+                            </div>
                         </div>
                     )}
-                </div>
+                </>
             )}
 
             {error && (

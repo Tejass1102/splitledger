@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { describeError } from '../api/client'
 import { profileApi } from '../api/profile'
-import Alert from '../components/Alert'
+import LoadError from '../components/LoadError'
+import PageHeader from '../components/PageHeader'
 import NameForm from '../components/profile/NameForm'
 import SalaryForm from '../components/profile/SalaryForm'
-import { useAuth } from '../context/AuthContext'
 import Spinner from '../components/Spinner'
+import { useAuth } from '../context/AuthContext'
 
 export default function ProfilePage() {
     const { updateUser } = useAuth()
@@ -50,22 +51,12 @@ export default function ProfilePage() {
     }
 
     return (
-        <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-ink">Profile</h1>
+        <div className="mx-auto max-w-3xl space-y-6">
+            <PageHeader title="Profile" description="Your account details and salary reminder." />
 
             {loading && <Spinner label="Loading your profile..." />}
 
-            {!loading && error && (
-                <div className="space-y-3">
-                    <Alert type="error">{error}</Alert>
-                    <button
-                        onClick={retry}
-                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-                    >
-                        Retry
-                    </button>
-                </div>
-            )}
+            {!loading && error && <LoadError message={error} onRetry={retry} />}
 
             {!loading && profile && (
                 <>

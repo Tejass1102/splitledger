@@ -12,6 +12,9 @@ import {
     splitEqual,
 } from '../../utils/splits'
 import Alert from '../Alert'
+import Button from '../Button'
+import { inputClass } from '../fieldStyles'
+import SegmentedControl from '../SegmentedControl'
 import FormField from '../FormField'
 import SelectField from '../SelectField'
 
@@ -19,9 +22,9 @@ const DESCRIPTION_MAX = 255
 const TOP_FIELDS = ['amount', 'expenseDate', 'description', 'paidByMemberId', 'splitType', 'splits']
 
 const SPLIT_TYPES = [
-    { key: 'EQUAL', label: 'Equally' },
-    { key: 'EXACT', label: 'By amounts' },
-    { key: 'PERCENTAGE', label: 'By percentages' },
+    { value: 'EQUAL', label: 'Equally' },
+    { value: 'EXACT', label: 'By amounts' },
+    { value: 'PERCENTAGE', label: 'By percentages' },
 ]
 
 function initialForm(expense, members, currentUserId) {
@@ -311,7 +314,7 @@ export default function GroupExpenseForm({
                 />
                 <p
                     className={`mt-1 text-right text-xs ${
-                        form.description.length > DESCRIPTION_MAX ? 'text-negative' : 'text-faint'
+                        form.description.length > DESCRIPTION_MAX ? 'text-negative' : 'text-muted'
                     }`}
                 >
                     {form.description.length}/{DESCRIPTION_MAX}
@@ -335,22 +338,12 @@ export default function GroupExpenseForm({
 
             <div>
                 <p className="mb-2 text-sm font-medium text-ink">How to split</p>
-                <div className="inline-flex flex-wrap rounded-lg bg-subtle p-1" role="tablist">
-                    {SPLIT_TYPES.map((type) => (
-                        <button
-                            key={type.key}
-                            type="button"
-                            role="tab"
-                            aria-selected={form.splitType === type.key}
-                            onClick={() => changeSplitType(type.key)}
-                            className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                                form.splitType === type.key ? 'bg-surface text-ink shadow-sm' : 'text-muted'
-                            }`}
-                        >
-                            {type.label}
-                        </button>
-                    ))}
-                </div>
+                <SegmentedControl
+                    label="How to split"
+                    options={SPLIT_TYPES}
+                    value={form.splitType}
+                    onChange={changeSplitType}
+                />
             </div>
 
             <div>
@@ -358,21 +351,13 @@ export default function GroupExpenseForm({
                     <p className="text-sm font-medium text-ink">
                         Split between ({included.length} of {members.length})
                     </p>
-                    <div className="flex gap-3 text-xs">
-                        <button
-                            type="button"
-                            onClick={() => setAll(true)}
-                            className="font-medium text-brand hover:underline"
-                        >
+                    <div className="flex gap-1">
+                        <Button variant="ghost" size="sm" onClick={() => setAll(true)}>
                             Select all
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setAll(false)}
-                            className="font-medium text-brand hover:underline"
-                        >
+                        </Button>
+                        <Button variant="ghost" size="sm" onClick={() => setAll(false)}>
                             Clear
-                        </button>
+                        </Button>
                     </div>
                 </div>
 
@@ -389,7 +374,7 @@ export default function GroupExpenseForm({
                                         type="checkbox"
                                         checked={on}
                                         onChange={() => toggleMember(m.id)}
-                                        className="h-4 w-4 rounded border-line-strong text-brand"
+                                        className="h-4 w-4 rounded border-line-strong accent-brand"
                                     />
                                     <span className="truncate">{m.displayName}</span>
                                 </label>
@@ -405,9 +390,11 @@ export default function GroupExpenseForm({
                                             aria-label={`${form.splitType === 'EXACT' ? 'Amount' : 'Percentage'} for ${m.displayName}`}
                                             value={form.values[m.id] ?? ''}
                                             onChange={(e) => setValue(m.id, e.target.value)}
-                                            className={`w-28 rounded-lg border px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand ${
-                                                rowErrors[m.id] ? 'border-negative' : 'border-line-strong'
-                                            }`}
+                                            className={`w-28 ${inputClass({
+                                                error: Boolean(rowErrors[m.id]),
+                                                compact: true,
+                                                fullWidth: false,
+                                            })}`}
                                         />
                                         {form.splitType === 'PERCENTAGE' && (
                                             <span className="text-sm text-muted">%</span>
@@ -442,22 +429,13 @@ export default function GroupExpenseForm({
             </div>
 
             <div className="flex gap-2">
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-                >
+                <Button type="submit" disabled={submitting}>
                     {submitting ? 'Saving...' : editing ? 'Save changes' : 'Add expense'}
-                </button>
+                </Button>
                 {onCancel && (
-                    <button
-                        type="button"
-                        onClick={onCancel}
-                        disabled={submitting}
-                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle disabled:opacity-60"
-                    >
+                    <Button variant="secondary" onClick={onCancel} disabled={submitting}>
                         Cancel
-                    </button>
+                    </Button>
                 )}
             </div>
         </form>

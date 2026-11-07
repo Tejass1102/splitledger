@@ -1,24 +1,14 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { useChartTheme } from '../../hooks/useChartTheme'
 import { formatMoney } from '../../utils/format'
-import Alert from '../Alert'
 import Card from '../Card'
 import Spinner from '../Spinner'
-
-const COLORS = [
-    '#4f46e5',
-    '#0891b2',
-    '#16a34a',
-    '#ca8a04',
-    '#dc2626',
-    '#9333ea',
-    '#db2777',
-    '#ea580c',
-    '#64748b',
-]
+import LoadError from './LoadError'
+import SegmentedControl from '../SegmentedControl'
 
 const TABS = [
-    { type: 'EXPENSE', label: 'Expenses' },
-    { type: 'INCOME', label: 'Income' },
+    { value: 'EXPENSE', label: 'Expenses' },
+    { value: 'INCOME', label: 'Income' },
 ]
 
 // data is a CategorySummaryResponse { month, type, total, items: [{ categoryId, categoryName, amount, percentage }] }
@@ -31,40 +21,20 @@ export default function CategoryBreakdown({
                                               data,
                                               onRetry,
                                           }) {
+    const theme = useChartTheme()
+    const colors = theme.palette
     const typeLabel = type === 'EXPENSE' ? 'expenses' : 'income'
     const items = (data?.items ?? []).map((item) => ({ ...item, amount: Number(item.amount) }))
 
     return (
         <Card title="By category" description={monthLabel}>
-            <div className="mb-5 inline-flex rounded-lg bg-subtle p-1" role="tablist">
-                {TABS.map((tab) => (
-                    <button
-                        key={tab.type}
-                        role="tab"
-                        aria-selected={type === tab.type}
-                        onClick={() => onTypeChange(tab.type)}
-                        className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                            type === tab.type ? 'bg-surface text-ink shadow-sm' : 'text-muted'
-                        }`}
-                    >
-                        {tab.label}
-                    </button>
-                ))}
+            <div className="mb-5">
+                <SegmentedControl label="Show" options={TABS} value={type} onChange={onTypeChange} />
             </div>
 
             {loading && <Spinner label="Loading breakdown..." />}
 
-            {!loading && error && (
-                <div className="space-y-3">
-                    <Alert type="error">{error}</Alert>
-                    <button
-                        onClick={onRetry}
-                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-                    >
-                        Retry
-                    </button>
-                </div>
-            )}
+            {!loading && error && <LoadError message={error} onRetry={onRetry} />}
 
             {!loading && !error && data && items.length === 0 && (
                 <p className="text-sm text-muted">
@@ -88,13 +58,17 @@ export default function CategoryBreakdown({
                                     innerRadius="60%"
                                     outerRadius="90%"
                                     paddingAngle={items.length > 1 ? 2 : 0}
+                                    stroke={theme.surface}
                                     isAnimationActive={false}
                                 >
                                     {items.map((item, index) => (
-                                        <Cell key={item.categoryId ?? 'none'} fill={COLORS[index % COLORS.length]} />
+                                        <Cell
+                                            key={item.categoryId ?? 'none'}
+                                            fill={colors[index % colors.length]}
+                                        />
                                     ))}
                                 </Pie>
-                                <Tooltip formatter={(value) => formatMoney(value)} />
+                                <Tooltip {...theme.tooltip} formatter={(value) => formatMoney(value)} />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
@@ -110,20 +84,20 @@ export default function CategoryBreakdown({
                                     key={item.categoryId ?? 'none'}
                                     className="flex items-center justify-between gap-3 py-2"
                                 >
-                  <span className="flex min-w-0 items-center gap-2">
-                    <span
-                        className="h-3 w-3 shrink-0 rounded-full"
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                        aria-hidden="true"
-                    />
-                    <span className="truncate text-sm text-ink">{item.categoryName}</span>
-                  </span>
+                                    <span className="flex min-w-0 items-center gap-2">
+                                        <span
+                                            className="h-3 w-3 shrink-0 rounded-full"
+                                            style={{ backgroundColor: colors[index % colors.length] }}
+                                            aria-hidden="true"
+                                        />
+                                        <span className="truncate text-sm text-ink">{item.categoryName}</span>
+                                    </span>
                                     <span className="shrink-0 text-sm text-muted">
-                    {formatMoney(item.amount)}
-                                        <span className="ml-2 text-xs text-faint">
-                      {Number(item.percentage).toFixed(1)}%
-                    </span>
-                  </span>
+                                        {formatMoney(item.amount)}
+                                        <span className="ml-2 text-xs text-muted">
+                                            {Number(item.percentage).toFixed(1)}%
+                                        </span>
+                                    </span>
                                 </li>
                             ))}
                         </ul>

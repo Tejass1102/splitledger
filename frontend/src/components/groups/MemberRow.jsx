@@ -1,15 +1,11 @@
 import { useState } from 'react'
 import { describeError } from '../../api/client'
 import { groupsApi } from '../../api/groups'
+import Avatar from '../Avatar'
+import Button, { IconButton } from '../Button'
 import FormField from '../FormField'
+import { LinkIcon, TrashIcon } from '../icons'
 import Badge from './Badge'
-
-const primaryButton =
-    'rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60'
-const secondaryButton =
-    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
-const dangerButton =
-    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
 
 // onRemoved(member), onLinked(member, email), onStale(message) and onRefresh() report back to the page
 export default function MemberRow({
@@ -88,54 +84,60 @@ export default function MemberRow({
 
     return (
         <li className="py-3">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-medium text-ink">{member.displayName}</span>
+            <div className="flex flex-wrap items-center gap-3">
+                <Avatar name={member.displayName} size="sm" />
+
+                <div className="flex min-w-0 flex-1 basis-40 flex-wrap items-center gap-2">
+                    <span className="truncate text-sm font-medium text-ink">{member.displayName}</span>
                     {member.userId === currentUserId && <Badge tone="indigo">You</Badge>}
                     {isGroupCreatorMember && <Badge tone="slate">Creator</Badge>}
                     {member.guest && <Badge tone="amber">Guest</Badge>}
                 </div>
 
-                {mode === 'confirmRemove' ? (
-                    <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm text-muted">Remove {member.displayName}?</span>
-                        <button onClick={handleRemove} disabled={busy} className={dangerButton}>
-                            {busy ? 'Removing...' : 'Yes, remove'}
-                        </button>
-                        <button onClick={backToView} disabled={busy} className={secondaryButton}>
-                            Cancel
-                        </button>
+                {mode === 'view' && (canLink || canRemove) && (
+                    <div className="flex shrink-0 items-center gap-1">
+                        {canLink && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                    setError('')
+                                    setMode('link')
+                                }}
+                            >
+                                <LinkIcon size={14} />
+                                Link to account
+                            </Button>
+                        )}
+                        {canRemove && (
+                            <IconButton
+                                tone="danger"
+                                label={`Remove ${member.displayName}`}
+                                onClick={() => {
+                                    setError('')
+                                    setMode('confirmRemove')
+                                }}
+                            >
+                                <TrashIcon size={16} />
+                            </IconButton>
+                        )}
                     </div>
-                ) : (
-                    mode === 'view' &&
-                    (canLink || canRemove) && (
-                        <div className="flex gap-2">
-                            {canLink && (
-                                <button
-                                    onClick={() => {
-                                        setError('')
-                                        setMode('link')
-                                    }}
-                                    className={secondaryButton}
-                                >
-                                    Link to account
-                                </button>
-                            )}
-                            {canRemove && (
-                                <button
-                                    onClick={() => {
-                                        setError('')
-                                        setMode('confirmRemove')
-                                    }}
-                                    className={secondaryButton}
-                                >
-                                    Remove
-                                </button>
-                            )}
-                        </div>
-                    )
                 )}
             </div>
+
+            {mode === 'confirmRemove' && (
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-negative-soft px-3 py-2">
+                    <span className="text-sm font-medium text-ink">Remove {member.displayName}?</span>
+                    <div className="flex gap-2">
+                        <Button variant="danger" size="sm" onClick={handleRemove} disabled={busy}>
+                            {busy ? 'Removing...' : 'Yes, remove'}
+                        </Button>
+                        <Button variant="secondary" size="sm" onClick={backToView} disabled={busy}>
+                            Cancel
+                        </Button>
+                    </div>
+                </div>
+            )}
 
             {mode === 'link' && (
                 <form onSubmit={handleLink} className="mt-3 space-y-3 rounded-xl bg-subtle p-4" noValidate>
@@ -154,12 +156,12 @@ export default function MemberRow({
                         error={fieldError}
                     />
                     <div className="flex gap-2">
-                        <button type="submit" disabled={busy} className={primaryButton}>
+                        <Button type="submit" disabled={busy}>
                             {busy ? 'Linking...' : 'Link account'}
-                        </button>
-                        <button type="button" onClick={backToView} disabled={busy} className={secondaryButton}>
+                        </Button>
+                        <Button variant="secondary" onClick={backToView} disabled={busy}>
                             Cancel
-                        </button>
+                        </Button>
                     </div>
                 </form>
             )}

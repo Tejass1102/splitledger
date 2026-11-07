@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { categoriesApi } from '../../api/categories'
 import { describeError } from '../../api/client'
 import Alert from '../Alert'
+import Button from '../Button'
 import FormField from '../FormField'
 
 const TYPE_LABELS = { EXPENSE: 'expense', INCOME: 'income' }
@@ -48,13 +49,9 @@ export default function CategoryForm({ type, onCreated }) {
                         error={fieldErrors.name}
                     />
                 </div>
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="mt-6 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-                >
+                <Button type="submit" disabled={submitting} className="mt-6">
                     {submitting ? 'Adding...' : 'Add category'}
-                </button>
+                </Button>
             </div>
         </form>
     )

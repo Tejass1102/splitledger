@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { describeError } from '../api/client'
 import AuthLayout from '../components/AuthLayout'
+import Alert from '../components/Alert'
+import Button from '../components/Button'
 import FormField from '../components/FormField'
 import GoogleSignInButton from '../components/GoogleSignInButton'
 import { useAuth } from '../context/AuthContext'
@@ -55,8 +57,8 @@ export default function LoginPage() {
     return (
         <AuthLayout title="Welcome back" subtitle="Log in to track your expenses and groups.">
             {error && (
-                <div className="mb-4 rounded-lg bg-negative-soft px-4 py-3 text-sm text-negative" role="alert">
-                    {error}
+                <div className="mb-4">
+                    <Alert type="error">{error}</Alert>
                 </div>
             )}
 
@@ -79,16 +81,12 @@ export default function LoginPage() {
                     onChange={handleChange}
                     error={fieldErrors.password}
                 />
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60"
-                >
+                <Button type="submit" disabled={submitting} className="w-full">
                     {submitting ? 'Logging in...' : 'Log in'}
-                </button>
+                </Button>
             </form>
 
-            <div className="my-6 flex items-center gap-3 text-xs text-faint">
+            <div className="my-6 flex items-center gap-3 text-xs text-muted">
                 <div className="h-px flex-1 bg-line" />
                 OR
                 <div className="h-px flex-1 bg-line" />

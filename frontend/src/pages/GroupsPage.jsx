@@ -3,10 +3,14 @@ import { describeError } from '../api/client'
 import { groupsApi } from '../api/groups'
 import Alert from '../components/Alert'
 import Card from '../components/Card'
+import EmptyState from '../components/EmptyState'
 import GroupForm from '../components/groups/GroupForm'
 import GroupItem from '../components/groups/GroupItem'
-import { useAuth } from '../context/AuthContext'
+import { GroupsIcon } from '../components/icons'
+import LoadError from '../components/LoadError'
+import PageHeader from '../components/PageHeader'
 import Spinner from '../components/Spinner'
+import { useAuth } from '../context/AuthContext'
 
 function byName(a, b) {
     return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
@@ -78,8 +82,8 @@ export default function GroupsPage() {
     }
 
     return (
-        <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-ink">Groups</h1>
+        <div className="mx-auto max-w-3xl space-y-6">
+            <PageHeader title="Groups" description="Share costs with friends, flatmates or a trip." />
 
             {notice && <Alert type={notice.type}>{notice.text}</Alert>}
 
@@ -90,25 +94,24 @@ export default function GroupsPage() {
                 <GroupForm onCreated={handleCreated} />
             </Card>
 
-            <Card title="Your groups">
+            <Card
+                title="Your groups"
+                description={
+                    !loading && !error && groups.length > 0
+                        ? `${groups.length} ${groups.length === 1 ? 'group' : 'groups'}`
+                        : undefined
+                }
+            >
                 {loading && <Spinner label="Loading groups..." />}
 
-                {!loading && error && (
-                    <div className="space-y-3">
-                        <Alert type="error">{error}</Alert>
-                        <button
-                            onClick={reload}
-                            className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-                        >
-                            Retry
-                        </button>
-                    </div>
-                )}
+                {!loading && error && <LoadError message={error} onRetry={reload} />}
 
                 {!loading && !error && groups.length === 0 && (
-                    <p className="text-sm text-muted">
-                        You aren&apos;t in any groups yet. Create one above.
-                    </p>
+                    <EmptyState
+                        icon={GroupsIcon}
+                        title="No groups yet"
+                        description="Create your first group above, then add members and start splitting."
+                    />
                 )}
 
                 {!loading && !error && groups.length > 0 && (

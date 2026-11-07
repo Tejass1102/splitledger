@@ -1,5 +1,6 @@
 import { currentMonthKey, formatMonthKey, shiftMonth } from '../../utils/format'
 import { ChevronLeftIcon, ChevronRightIcon } from '../icons'
+import Button from '../Button'
 
 const iconButton =
     'inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted hover:bg-subtle hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
@@ -29,12 +30,9 @@ export default function MonthSwitcher({ month, onChange }) {
                 </button>
             </div>
             {!isCurrent && (
-                <button
-                    onClick={() => onChange(currentMonthKey())}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-brand hover:bg-brand-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-                >
+                <Button variant="ghost" onClick={() => onChange(currentMonthKey())}>
                     This month
-                </button>
+                </Button>
             )}
         </div>
     )

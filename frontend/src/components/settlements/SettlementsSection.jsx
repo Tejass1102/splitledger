@@ -3,6 +3,9 @@ import { settlementsApi } from '../../api/settlements'
 import { useGroupResource } from '../../hooks/useGroupResource'
 import Alert from '../Alert'
 import Card from '../Card'
+import EmptyState from '../EmptyState'
+import { ReceiptIcon } from '../icons'
+import LoadError from '../LoadError'
 import BalanceList from './BalanceList'
 import SettlementForm from './SettlementForm'
 import SettlementItem from './SettlementItem'
@@ -13,19 +16,7 @@ function byNewest(a, b) {
     return b.settledOn.localeCompare(a.settledOn) || b.id - a.id
 }
 
-function LoadError({ message, onRetry }) {
-    return (
-        <div className="space-y-3">
-            <Alert type="error">{message}</Alert>
-            <button
-                onClick={onRetry}
-                className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-            >
-                Retry
-            </button>
-        </div>
-    )
-}
+
 
 // moneyVersion goes up whenever something outside this section changes the group's
 // money (group expenses, members), so the balances reload.
@@ -133,7 +124,11 @@ export default function SettlementsSection({ group, currentUserId, moneyVersion 
                 {!history.loaded && <Spinner label="Loading settlements..." />}
                 {history.error && <LoadError message={history.error} onRetry={reload} />}
                 {history.data && settlements.length === 0 && (
-                    <p className="text-sm text-muted">No settlements recorded yet.</p>
+                    <EmptyState
+                        icon={ReceiptIcon}
+                        title="No settlements recorded yet"
+                        description="Payments between members will appear here once you record them."
+                    />
                 )}
                 {settlements.length > 0 && (
                     <ul className="divide-y divide-line">

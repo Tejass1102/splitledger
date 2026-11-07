@@ -5,10 +5,12 @@ import { groupsApi } from '../api/groups'
 import Alert from '../components/Alert'
 import GroupExpensesSection from '../components/groupExpenses/GroupExpensesSection'
 import MembersCard from '../components/groups/MembersCard'
+import { ArrowLeftIcon } from '../components/icons'
+import LoadError from '../components/LoadError'
 import SettlementsSection from '../components/settlements/SettlementsSection'
+import Spinner from '../components/Spinner'
 import { useAuth } from '../context/AuthContext'
 import { formatDateTime } from '../utils/format'
-import Spinner from '../components/Spinner'
 
 export default function GroupDetailPage() {
     const { groupId } = useParams()
@@ -102,33 +104,31 @@ export default function GroupDetailPage() {
     const creator = group?.members.find((m) => m.userId === group.createdById)
 
     return (
-        <div className="mx-auto max-w-2xl space-y-6">
-            <Link to="/groups" className="text-sm font-medium text-brand hover:underline">
-                ← All groups
+        <div className="mx-auto max-w-3xl space-y-6">
+            <Link
+                to="/groups"
+                className="inline-flex items-center gap-1.5 rounded text-sm font-medium text-brand hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            >
+                <ArrowLeftIcon size={16} />
+                All groups
             </Link>
 
             {loading && <Spinner label="Loading group..." />}
 
-            {!loading && error && (
-                <div className="space-y-3">
+            {!loading && error &&
+                (status === 404 ? (
                     <Alert type="error">{error}</Alert>
-                    {status !== 404 && (
-                        <button
-                            onClick={retry}
-                            className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-                        >
-                            Retry
-                        </button>
-                    )}
-                </div>
-            )}
+                ) : (
+                    <LoadError message={error} onRetry={retry} />
+                ))}
 
             {!loading && group && (
                 <>
                     <div>
                         <h1 className="text-2xl font-bold text-ink">{group.name}</h1>
                         <p className="mt-1 text-sm text-muted">
-                            Created by{' '}
+                            {group.members.length} {group.members.length === 1 ? 'member' : 'members'} · Created
+                            by{' '}
                             {group.createdById === user.id ? 'you' : (creator?.displayName ?? 'another member')} on{' '}
                             {formatDateTime(group.createdAt)}
                         </p>

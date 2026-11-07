@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { describeError } from '../../api/client'
 import { groupsApi } from '../../api/groups'
+import Button, { IconButton } from '../Button'
+import { inputClass } from '../fieldStyles'
+import { GroupsIcon, PencilIcon, TrashIcon } from '../icons'
+import Badge from './Badge'
 
 // Prefer the field message (400 validation); fall back to the general message (403, 409 ...)
 function messageFor(err) {
@@ -9,14 +13,7 @@ function messageFor(err) {
     return described.fieldErrors.name || described.message
 }
 
-const primaryButton =
-    'rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-on-brand hover:bg-brand-hover disabled:opacity-60'
-const secondaryButton =
-    'rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle disabled:opacity-60'
-const dangerButton =
-    'rounded-lg bg-negative text-on-negative hover:bg-negative-hover disabled:opacity-60'
-
-// isCreator decides whether Edit and Delete are shown (the backend enforces it as well).
+// isCreator decides whether Rename and Delete are shown (the backend enforces it as well).
 // onRenamed(id, newName), onDeleted(id), onStale(message) report back to the page.
 export default function GroupItem({ group, isCreator, onRenamed, onDeleted, onStale }) {
     const [mode, setMode] = useState('view') // 'view' | 'edit' | 'confirmDelete'
@@ -75,74 +72,79 @@ export default function GroupItem({ group, isCreator, onRenamed, onDeleted, onSt
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         autoFocus
-                        className="min-w-0 flex-1 basis-48 rounded-lg border border-line-strong px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand"
+                        className={`min-w-0 flex-1 basis-48 ${inputClass({ compact: true, fullWidth: false })}`}
                     />
-                    <button
-                        type="submit"
-                        disabled={busy || name.trim() === group.name}
-                        className={primaryButton}
-                    >
+                    <Button type="submit" size="sm" disabled={busy || name.trim() === group.name}>
                         {busy ? 'Saving...' : 'Save'}
-                    </button>
-                    <button type="button" onClick={backToView} disabled={busy} className={secondaryButton}>
+                    </Button>
+                    <Button variant="secondary" size="sm" onClick={backToView} disabled={busy}>
                         Cancel
-                    </button>
+                    </Button>
                 </form>
             ) : (
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="min-w-0">
-                        <p className="flex flex-wrap items-center gap-2">
-                            <Link
-                                to={`/groups/${group.id}`}
-                                className="truncate text-sm font-semibold text-brand hover:underline"
-                            >
-                                {group.name}
-                            </Link>
-                            {isCreator && (
-                                <span className="rounded-full bg-brand-soft px-2.5 py-0.5 text-xs font-medium text-brand">
-                  Creator
-                </span>
-                            )}
-                        </p>
-                        <p className="mt-0.5 text-xs text-muted">
-                            {group.memberCount} {group.memberCount === 1 ? 'member' : 'members'}
-                        </p>
-                    </div>
+                <>
+                    <div className="flex items-center gap-3">
+                        <span
+                            aria-hidden="true"
+                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand"
+                        >
+                            <GroupsIcon size={20} />
+                        </span>
 
-                    {isCreator &&
-                        (mode === 'confirmDelete' ? (
-                            <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-sm text-muted">Delete this group?</span>
-                                <button onClick={handleDelete} disabled={busy} className={dangerButton}>
-                                    {busy ? 'Deleting...' : 'Yes, delete'}
-                                </button>
-                                <button onClick={backToView} disabled={busy} className={secondaryButton}>
-                                    Cancel
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="flex gap-2">
-                                <button
+                        <div className="min-w-0 flex-1">
+                            <p className="flex flex-wrap items-center gap-2">
+                                <Link
+                                    to={`/groups/${group.id}`}
+                                    className="truncate rounded text-sm font-semibold text-ink hover:text-brand hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                                >
+                                    {group.name}
+                                </Link>
+                                {isCreator && <Badge tone="indigo">Creator</Badge>}
+                            </p>
+                            <p className="mt-0.5 text-xs text-muted">
+                                {group.memberCount} {group.memberCount === 1 ? 'member' : 'members'}
+                            </p>
+                        </div>
+
+                        {isCreator && mode === 'view' && (
+                            <div className="flex shrink-0 gap-0.5">
+                                <IconButton
+                                    label={`Rename ${group.name}`}
                                     onClick={() => {
                                         setError('')
                                         setMode('edit')
                                     }}
-                                    className={secondaryButton}
                                 >
-                                    Rename
-                                </button>
-                                <button
+                                    <PencilIcon size={16} />
+                                </IconButton>
+                                <IconButton
+                                    tone="danger"
+                                    label={`Delete ${group.name}`}
                                     onClick={() => {
                                         setError('')
                                         setMode('confirmDelete')
                                     }}
-                                    className={secondaryButton}
                                 >
-                                    Delete
-                                </button>
+                                    <TrashIcon size={16} />
+                                </IconButton>
                             </div>
-                        ))}
-                </div>
+                        )}
+                    </div>
+
+                    {isCreator && mode === 'confirmDelete' && (
+                        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-negative-soft px-3 py-2">
+                            <span className="text-sm font-medium text-ink">Delete this group?</span>
+                            <div className="flex gap-2">
+                                <Button variant="danger" size="sm" onClick={handleDelete} disabled={busy}>
+                                    {busy ? 'Deleting...' : 'Yes, delete'}
+                                </Button>
+                                <Button variant="secondary" size="sm" onClick={backToView} disabled={busy}>
+                                    Cancel
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </>
             )}
 
             {error && (

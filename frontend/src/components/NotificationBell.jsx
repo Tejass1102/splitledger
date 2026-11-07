@@ -147,7 +147,7 @@ export default function NotificationBell() {
                                                 >
                                                     {item.message}
                                                 </span>
-                                                <span className="mt-0.5 block text-xs text-faint">
+                                                <span className="mt-0.5 block text-xs text-muted">
                                                     {formatDateTime(item.createdAt)}
                                                 </span>
                                             </span>

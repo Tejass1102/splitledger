@@ -90,3 +90,35 @@ export function formatMonthKey(key) {
     const [year, month] = key.split('-').map(Number)
     return monthFormat.format(new Date(year, month - 1, 1))
 }
+const compactMoney = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    notation: 'compact',
+    maximumFractionDigits: 1,
+})
+const monthShortFormat = new Intl.DateTimeFormat('en-IN', { month: 'short' })
+
+// 125000 -> "₹1.3L" (short form for chart axes)
+export function formatMoneyCompact(value) {
+    return compactMoney.format(value)
+}
+
+// "2026-11" -> "Nov"
+export function formatMonthShort(key) {
+    const [year, month] = key.split('-').map(Number)
+    return monthShortFormat.format(new Date(year, month - 1, 1))
+}
+
+// monthKeysEnding("2026-11", 6) -> ["2026-06", "2026-07", ..., "2026-11"]
+export function monthKeysEnding(key, count) {
+    return Array.from({ length: count }, (_, i) => shiftMonth(key, i - (count - 1)))
+}
+
+// "2026-11" -> { from: "2026-11-01", to: "2026-11-30" }
+export function monthRange(key) {
+    const [year, month] = key.split('-').map(Number)
+    return {
+        from: toIsoDate(new Date(year, month - 1, 1)),
+        to: toIsoDate(new Date(year, month, 0)),
+    }
+}

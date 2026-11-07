@@ -1,4 +1,7 @@
 import { formatMoney } from '../../utils/format'
+import Button from '../Button'
+import EmptyState from '../EmptyState'
+import { CheckCircleIcon } from '../icons'
 
 // settleUp is a SettleUpResponse { groupId, payments: [{ fromMemberId, fromName, toMemberId, toName, amount }] }
 // onUse(payment) fills the settlement form with that payment
@@ -6,7 +9,13 @@ export default function SuggestionList({ settleUp, members, currentUserId, onUse
     const userIdOf = (memberId) => members.find((m) => m.id === memberId)?.userId
 
     if (settleUp.payments.length === 0) {
-        return <p className="text-sm text-muted">No payments are needed right now.</p>
+        return (
+            <EmptyState
+                icon={CheckCircleIcon}
+                title="No payments are needed"
+                description="Nobody owes anything right now."
+            />
+        )
     }
 
     return (
@@ -29,12 +38,9 @@ export default function SuggestionList({ settleUp, members, currentUserId, onUse
                             {sentence}{' '}
                             <span className="font-semibold">{formatMoney(payment.amount)}</span>
                         </p>
-                        <button
-                            onClick={() => onUse(payment)}
-                            className="rounded-lg border border-line-strong px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle"
-                        >
+                        <Button variant="secondary" size="sm" onClick={() => onUse(payment)}>
                             Record this payment
-                        </button>
+                        </Button>
                     </li>
                 )
             })}

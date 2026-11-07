@@ -5,11 +5,16 @@ import Alert from '../components/Alert'
 import Card from '../components/Card'
 import CategoryForm from '../components/categories/CategoryForm'
 import CategoryRow from '../components/categories/CategoryRow'
+import EmptyState from '../components/EmptyState'
+import { CategoriesIcon } from '../components/icons'
+import LoadError from '../components/LoadError'
+import PageHeader from '../components/PageHeader'
+import SegmentedControl from '../components/SegmentedControl'
 import Spinner from '../components/Spinner'
 
 const TABS = [
-    { type: 'EXPENSE', label: 'Expense' },
-    { type: 'INCOME', label: 'Income' },
+    { value: 'EXPENSE', label: 'Expense' },
+    { value: 'INCOME', label: 'Income' },
 ]
 
 function byName(a, b) {
@@ -85,24 +90,15 @@ export default function CategoriesPage() {
     const typeLabel = type === 'EXPENSE' ? 'expense' : 'income'
 
     return (
-        <div className="mx-auto max-w-2xl space-y-6">
-            <h1 className="text-2xl font-bold text-ink">Categories</h1>
+        <div className="mx-auto max-w-3xl space-y-6">
+            <PageHeader title="Categories" description="Organise your expenses and income." />
 
-            <div className="inline-flex rounded-lg bg-subtle p-1" role="tablist">
-                {TABS.map((tab) => (
-                    <button
-                        key={tab.type}
-                        role="tab"
-                        aria-selected={type === tab.type}
-                        onClick={() => handleTabChange(tab.type)}
-                        className={`rounded-md px-4 py-1.5 text-sm font-medium ${
-                            type === tab.type ? 'bg-surface text-ink shadow-sm' : 'text-muted'
-                        }`}
-                    >
-                        {tab.label}
-                    </button>
-                ))}
-            </div>
+            <SegmentedControl
+                label="Category type"
+                options={TABS}
+                value={type}
+                onChange={handleTabChange}
+            />
 
             <Alert type="error">{notice}</Alert>
 
@@ -115,25 +111,26 @@ export default function CategoriesPage() {
 
             {loading && <Spinner label="Loading categories..." />}
 
-            {!loading && error && (
-                <div className="space-y-3">
-                    <Alert type="error">{error}</Alert>
-                    <button
-                        onClick={reload}
-                        className="rounded-lg border border-line-strong px-4 py-2 text-sm font-semibold text-ink hover:bg-subtle"
-                    >
-                        Retry
-                    </button>
-                </div>
-            )}
+            {!loading && error && <LoadError message={error} onRetry={reload} />}
 
             {!loading && !error && (
                 <>
-                    <Card title="Your categories">
+                    <Card
+                        title="Your categories"
+                        description={
+                            custom.length > 0
+                                ? `${custom.length} custom ${typeLabel} ${
+                                    custom.length === 1 ? 'category' : 'categories'
+                                }`
+                                : undefined
+                        }
+                    >
                         {custom.length === 0 ? (
-                            <p className="text-sm text-muted">
-                                You haven&apos;t added any {typeLabel} categories yet.
-                            </p>
+                            <EmptyState
+                                icon={CategoriesIcon}
+                                title={`No custom ${typeLabel} categories yet`}
+                                description="Add one above and it will show up here."
+                            />
                         ) : (
                             <ul className="divide-y divide-line">
                                 {custom.map((category) => (
